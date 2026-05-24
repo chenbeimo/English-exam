@@ -220,8 +220,7 @@ const App = {
     const current = this.state.currentIndex + 1;
     document.getElementById('learnProgressText').textContent = `${current} / ${total}`;
     document.getElementById('learnProgressBar').style.width = `${(current / total) * 100}%`;
-    // 自动发音
-    setTimeout(() => TTS.speakWord(word.word, Storage.getSettings().speechRate), 300);
+    // 移动端需要用户主动点击才能发音，提示用户点击发音按钮
   },
 
   handleKnow(know) {
@@ -299,7 +298,7 @@ const App = {
       container.appendChild(btn);
     });
 
-    setTimeout(() => TTS.speakWord(word.word, Storage.getSettings().speechRate), 300);
+    // 移动端需要用户点击发音按钮触发语音
   },
 
   handleQuizAnswer(selected, correct, btn) {
@@ -468,7 +467,7 @@ const App = {
     document.getElementById('spellFeedback').style.display = 'none';
     document.getElementById('spellInput').focus();
 
-    setTimeout(() => TTS.speakWord(word.word, Storage.getSettings().speechRate), 300);
+    // 移动端需要用户点击发音按钮触发语音
   },
 
   handleSpellSubmit() {

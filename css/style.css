@@ -390,6 +390,10 @@ body {
   font-size: 20px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .speak-btn:active {
@@ -397,12 +401,31 @@ body {
   background: #dde4ef;
 }
 
+.speak-btn.with-label {
+  width: auto;
+  height: auto;
+  border-radius: 24px;
+  padding: 10px 16px;
+  gap: 6px;
+  font-size: 20px;
+  background: #EBF3FC;
+  color: var(--primary);
+}
+
+.speak-btn.with-label span {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .speak-btn.large {
   width: auto;
   height: auto;
-  padding: 16px 32px;
+  padding: 16px 36px;
   border-radius: 30px;
-  font-size: 18px;
+  font-size: 20px;
+  background: #EBF3FC;
+  color: var(--primary);
 }
 
 /* ===== 测验模式 ===== */
