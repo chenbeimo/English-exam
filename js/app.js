@@ -20,8 +20,37 @@ const App = {
   init() {
     const settings = Storage.getSettings();
     this.state.category = settings.category || 'core';
-    this.bindEvents();
-    this.navigate('home');
+
+    // ===== 修改位置：检查音频解锁状态 =====
+    var audioUnlocked = localStorage.getItem('vocab_audio_unlocked') === '1';
+    if (!audioUnlocked) {
+      this.showAudioLock();
+    } else {
+      // 返回用户：恢复解锁状态
+      TTS.unlocked = true;
+      TTS.init();
+      this.bindEvents();
+      this.navigate('home');
+    }
+  },
+
+  // ===== 修改位置：显示音频解锁遮罩 =====
+  showAudioLock: function () {
+    var overlay = document.getElementById('audioLockOverlay');
+    var self = this;
+    overlay.style.display = 'flex';
+
+    var handler = function () {
+      // 在用户点击事件同步流中解锁
+      TTS.unlock();
+      localStorage.setItem('vocab_audio_unlocked', '1');
+      overlay.style.display = 'none';
+      self.bindEvents();
+      self.navigate('home');
+      overlay.removeEventListener('click', handler);
+    };
+
+    overlay.addEventListener('click', handler);
   },
 
   // ===== 事件绑定 =====

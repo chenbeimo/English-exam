@@ -1,3 +1,58 @@
+/* ===== 修改位置：音频解锁全屏遮罩 ===== */
+.unlock-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease;
+}
+
+.unlock-card {
+  text-align: center;
+  color: #fff;
+  padding: 40px 32px;
+  animation: unlockPulse 2s ease-in-out infinite;
+}
+
+.unlock-icon {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 20px;
+  animation: unlockBounce 1.5s ease-in-out infinite;
+}
+
+.unlock-card h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 2px;
+}
+
+.unlock-card p {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.unlock-sub {
+  font-size: 12px !important;
+  opacity: 0.5 !important;
+}
+
+@keyframes unlockPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes unlockBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
 /* ===== 全局样式 ===== */
 * {
   margin: 0;
