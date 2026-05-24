@@ -150,8 +150,9 @@ body {
 }
 
 .stats-row {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
@@ -163,7 +164,7 @@ body {
   font-size: 22px;
   font-weight: 700;
   color: var(--primary);
-  display: block;
+  display: block !important;
 }
 
 .stat-label {
