@@ -1,0 +1,638 @@
+// 专升本英语单词词库
+const wordDatabase = {
+  core: {
+    name: '核心高频词',
+    units: [
+      {
+        name: 'Unit 1 - 基础动词',
+        words: [
+          { id: 1, word: 'abandon', phonetic: '/əˈbændən/', meaning: '放弃；抛弃', example: 'He abandoned his plan to travel.', exampleCn: '他放弃了旅行计划。' },
+          { id: 2, word: 'absorb', phonetic: '/əbˈzɔːrb/', meaning: '吸收；吸引', example: 'Plants absorb water from the soil.', exampleCn: '植物从土壤中吸收水分。' },
+          { id: 3, word: 'accept', phonetic: '/əkˈsept/', meaning: '接受；承认', example: 'She accepted the job offer.', exampleCn: '她接受了这份工作。' },
+          { id: 4, word: 'achieve', phonetic: '/əˈtʃiːv/', meaning: '达到；取得', example: 'He achieved his goal of becoming a doctor.', exampleCn: '他实现了成为医生的目标。' },
+          { id: 5, word: 'adapt', phonetic: '/əˈdæpt/', meaning: '适应；改编', example: 'We need to adapt to the new environment.', exampleCn: '我们需要适应新环境。' },
+          { id: 6, word: 'adjust', phonetic: '/əˈdʒʌst/', meaning: '调整；适应', example: 'You can adjust the volume with this button.', exampleCn: '你可以用这个按钮调节音量。' },
+          { id: 7, word: 'admire', phonetic: '/ədˈmaɪər/', meaning: '钦佩；赞赏', example: 'I admire her courage and determination.', exampleCn: '我钦佩她的勇气和决心。' },
+          { id: 8, word: 'adopt', phonetic: '/əˈdɑːpt/', meaning: '采用；收养', example: 'The company adopted a new policy.', exampleCn: '公司采用了一项新政策。' },
+          { id: 9, word: 'affect', phonetic: '/əˈfekt/', meaning: '影响；感动', example: 'The weather can affect your mood.', exampleCn: '天气会影响你的情绪。' },
+          { id: 10, word: 'afford', phonetic: '/əˈfɔːrd/', meaning: '负担得起；提供', example: 'I cannot afford to buy a new car.', exampleCn: '我买不起新车。' },
+          { id: 11, word: 'analyze', phonetic: '/ˈænəlaɪz/', meaning: '分析', example: 'We need to analyze the data carefully.', exampleCn: '我们需要仔细分析这些数据。' },
+          { id: 12, word: 'announce', phonetic: '/əˈnaʊns/', meaning: '宣布；通告', example: 'The president announced the new plan.', exampleCn: '总统宣布了新计划。' },
+          { id: 13, word: 'approach', phonetic: '/əˈproʊtʃ/', meaning: '接近；方法', example: 'A new approach to teaching English.', exampleCn: '一种新的英语教学方法。' },
+          { id: 14, word: 'approve', phonetic: '/əˈpruːv/', meaning: '批准；赞成', example: 'The committee approved the proposal.', exampleCn: '委员会批准了这项提案。' },
+          { id: 15, word: 'arrange', phonetic: '/əˈreɪndʒ/', meaning: '安排；整理', example: 'Can you arrange a meeting for us?', exampleCn: '你能为我们安排一次会议吗？' },
+          { id: 16, word: 'assume', phonetic: '/əˈsuːm/', meaning: '假设；承担', example: 'We assumed he was innocent.', exampleCn: '我们假设他是无辜的。' },
+          { id: 17, word: 'attach', phonetic: '/əˈtætʃ/', meaning: '附加；附上', example: 'Please attach your resume to the email.', exampleCn: '请将简历附在邮件中。' },
+          { id: 18, word: 'attempt', phonetic: '/əˈtempt/', meaning: '尝试；企图', example: 'He attempted to break the world record.', exampleCn: '他试图打破世界纪录。' },
+          { id: 19, word: 'attract', phonetic: '/əˈtrækt/', meaning: '吸引', example: 'The museum attracts many visitors.', exampleCn: '博物馆吸引了许多游客。' },
+          { id: 20, word: 'avoid', phonetic: '/əˈvɔɪd/', meaning: '避免；回避', example: 'You should avoid eating too much sugar.', exampleCn: '你应该避免吃太多糖。' }
+        ]
+      },
+      {
+        name: 'Unit 2 - 名词与形容词',
+        words: [
+          { id: 21, word: 'ability', phonetic: '/əˈbɪləti/', meaning: '能力；才能', example: 'She has the ability to learn quickly.', exampleCn: '她有快速学习的能力。' },
+          { id: 22, word: 'absence', phonetic: '/ˈæbsəns/', meaning: '缺席；缺乏', example: 'His absence from the meeting was noticed.', exampleCn: '他缺席会议被注意到了。' },
+          { id: 23, word: 'access', phonetic: '/ˈækses/', meaning: '进入；通道', example: 'Students have access to the library.', exampleCn: '学生可以进入图书馆。' },
+          { id: 24, word: 'accident', phonetic: '/ˈæksɪdənt/', meaning: '事故；意外', example: 'He was injured in a car accident.', exampleCn: '他在一场车祸中受伤了。' },
+          { id: 25, word: 'accurate', phonetic: '/ˈækjərət/', meaning: '准确的；精确的', example: 'The report must be accurate and detailed.', exampleCn: '报告必须准确详尽。' },
+          { id: 26, word: 'advantage', phonetic: '/ədˈvæntɪdʒ/', meaning: '优势；有利条件', example: 'Being tall is an advantage in basketball.', exampleCn: '个子高在篮球运动中是一种优势。' },
+          { id: 27, word: 'adventure', phonetic: '/ədˈventʃər/', meaning: '冒险；奇遇', example: 'Life is full of adventures.', exampleCn: '生活充满了冒险。' },
+          { id: 28, word: 'anxiety', phonetic: '/æŋˈzaɪəti/', meaning: '焦虑；忧虑', example: 'Too much anxiety can affect your health.', exampleCn: '过多的焦虑会影响你的健康。' },
+          { id: 29, word: 'appearance', phonetic: '/əˈpɪrəns/', meaning: '外观；出现', example: 'Never judge by appearance alone.', exampleCn: '千万不要以貌取人。' },
+          { id: 30, word: 'appreciation', phonetic: '/əˌpriːʃiˈeɪʃn/', meaning: '欣赏；感激', example: 'She showed her appreciation with a gift.', exampleCn: '她用一份礼物表达了感激之情。' },
+          { id: 31, word: 'atmosphere', phonetic: '/ˈætməsfɪr/', meaning: '气氛；大气层', example: 'The restaurant has a romantic atmosphere.', exampleCn: '这家餐厅有一种浪漫的氛围。' },
+          { id: 32, word: 'attitude', phonetic: '/ˈætɪtuːd/', meaning: '态度；看法', example: 'A positive attitude is key to success.', exampleCn: '积极的态度是成功的关键。' },
+          { id: 33, word: 'audience', phonetic: '/ˈɔːdiəns/', meaning: '观众；听众', example: 'The audience applauded warmly.', exampleCn: '观众热烈鼓掌。' },
+          { id: 34, word: 'balance', phonetic: '/ˈbæləns/', meaning: '平衡；余额', example: 'You need to find a balance between work and life.', exampleCn: '你需要在工作和生活之间找到平衡。' },
+          { id: 35, word: 'barrier', phonetic: '/ˈbæriər/', meaning: '障碍；屏障', example: 'Language is a barrier to communication.', exampleCn: '语言是沟通的障碍。' },
+          { id: 36, word: 'benefit', phonetic: '/ˈbenɪfɪt/', meaning: '利益；好处', example: 'Exercise has many health benefits.', exampleCn: '运动对健康有很多好处。' },
+          { id: 37, word: 'budget', phonetic: '/ˈbʌdʒɪt/', meaning: '预算', example: 'We need to plan the budget carefully.', exampleCn: '我们需要仔细规划预算。' },
+          { id: 38, word: 'burden', phonetic: '/ˈbɜːrdn/', meaning: '负担；重担', example: 'The heavy burden of responsibility.', exampleCn: '沉重的责任负担。' },
+          { id: 39, word: 'campaign', phonetic: '/kæmˈpeɪn/', meaning: '运动；战役', example: 'They launched an advertising campaign.', exampleCn: '他们发起了一场广告宣传活动。' },
+          { id: 40, word: 'capable', phonetic: '/ˈkeɪpəbl/', meaning: '有能力的', example: 'She is capable of handling this task.', exampleCn: '她有能力处理这项任务。' }
+        ]
+      },
+      {
+        name: 'Unit 3 - 社会发展',
+        words: [
+          { id: 41, word: 'challenge', phonetic: '/ˈtʃælɪndʒ/', meaning: '挑战', example: 'This job is a real challenge for me.', exampleCn: '这份工作对我来说是真正的挑战。' },
+          { id: 42, word: 'character', phonetic: '/ˈkærəktər/', meaning: '性格；角色；字符', example: 'He is a man of strong character.', exampleCn: '他是一个性格坚强的人。' },
+          { id: 43, word: 'circumstance', phonetic: '/ˈsɜːrkəmstæns/', meaning: '环境；情况', example: 'Under no circumstances should you lie.', exampleCn: '在任何情况下你都不应该说谎。' },
+          { id: 44, word: 'civilization', phonetic: '/ˌsɪvələˈzeɪʃn/', meaning: '文明', example: 'Ancient Egyptian civilization is fascinating.', exampleCn: '古埃及文明令人着迷。' },
+          { id: 45, word: 'communicate', phonetic: '/kəˈmjuːnɪkeɪt/', meaning: '交流；沟通', example: 'We communicate by email every day.', exampleCn: '我们每天通过邮件交流。' },
+          { id: 46, word: 'community', phonetic: '/kəˈmjuːnəti/', meaning: '社区；团体', example: 'The local community supports the school.', exampleCn: '当地社区支持这所学校。' },
+          { id: 47, word: 'compete', phonetic: '/kəmˈpiːt/', meaning: '竞争；比赛', example: 'Companies compete for market share.', exampleCn: '公司争夺市场份额。' },
+          { id: 48, word: 'concentrate', phonetic: '/ˈkɑːnsntreɪt/', meaning: '集中；专注', example: 'I cannot concentrate on my work with all this noise.', exampleCn: '这些噪音让我无法集中精力工作。' },
+          { id: 49, word: 'confidence', phonetic: '/ˈkɑːnfɪdəns/', meaning: '信心；信任', example: 'She lacks confidence in herself.', exampleCn: '她对自己缺乏信心。' },
+          { id: 50, word: 'conflict', phonetic: '/ˈkɑːnflɪkt/', meaning: '冲突；矛盾', example: 'The conflict between the two countries lasted for years.', exampleCn: '两国之间的冲突持续了多年。' },
+          { id: 51, word: 'consequence', phonetic: '/ˈkɑːnsɪkwens/', meaning: '结果；后果', example: 'You must accept the consequences of your actions.', exampleCn: '你必须承担自己行为的后果。' },
+          { id: 52, word: 'consume', phonetic: '/kənˈsuːm/', meaning: '消费；消耗', example: 'We consume a lot of energy every day.', exampleCn: '我们每天消耗大量能源。' },
+          { id: 53, word: 'contribute', phonetic: '/kənˈtrɪbjuːt/', meaning: '贡献；捐赠', example: 'Everyone should contribute to society.', exampleCn: '每个人都应该为社会做贡献。' },
+          { id: 54, word: 'convenient', phonetic: '/kənˈviːniənt/', meaning: '方便的', example: 'Online shopping is very convenient.', exampleCn: '网上购物非常方便。' },
+          { id: 55, word: 'convince', phonetic: '/kənˈvɪns/', meaning: '说服；使信服', example: 'I tried to convince him to stay.', exampleCn: '我试图说服他留下来。' },
+          { id: 56, word: 'cooperate', phonetic: '/koʊˈɑːpəreɪt/', meaning: '合作', example: 'We should cooperate with each other.', exampleCn: '我们应该相互合作。' },
+          { id: 57, word: 'creative', phonetic: '/kriˈeɪtɪv/', meaning: '创造性的', example: 'She has a very creative mind.', exampleCn: '她有一个非常有创造力的头脑。' },
+          { id: 58, word: 'crisis', phonetic: '/ˈkraɪsɪs/', meaning: '危机', example: 'The company is facing a financial crisis.', exampleCn: '公司正面临财务危机。' },
+          { id: 59, word: 'culture', phonetic: '/ˈkʌltʃər/', meaning: '文化', example: 'We should respect different cultures.', exampleCn: '我们应该尊重不同的文化。' },
+          { id: 60, word: 'curious', phonetic: '/ˈkjʊriəs/', meaning: '好奇的', example: 'Children are naturally curious about the world.', exampleCn: '孩子天生对世界充满好奇。' }
+        ]
+      },
+      {
+        name: 'Unit 4 - 经济生活',
+        words: [
+          { id: 61, word: 'decrease', phonetic: '/dɪˈkriːs/', meaning: '减少；降低', example: 'The population of the town is decreasing.', exampleCn: '这个小镇的人口在减少。' },
+          { id: 62, word: 'demand', phonetic: '/dɪˈmænd/', meaning: '要求；需求', example: 'There is a growing demand for electric cars.', exampleCn: '对电动汽车的需求在不断增长。' },
+          { id: 63, word: 'demonstrate', phonetic: '/ˈdemənstreɪt/', meaning: '展示；证明', example: 'The experiment demonstrates the theory.', exampleCn: '实验证明了这一理论。' },
+          { id: 64, word: 'depend', phonetic: '/dɪˈpend/', meaning: '依赖；取决于', example: 'Success depends on hard work.', exampleCn: '成功取决于努力。' },
+          { id: 65, word: 'deserve', phonetic: '/dɪˈzɜːrv/', meaning: '值得；应得', example: 'You deserve a good rest after all this work.', exampleCn: '做了这么多工作，你应该好好休息一下。' },
+          { id: 66, word: 'determine', phonetic: '/dɪˈtɜːrmɪn/', meaning: '决定；确定', example: 'Your attitude determines your altitude.', exampleCn: '你的态度决定你的高度。' },
+          { id: 67, word: 'develop', phonetic: '/dɪˈveləp/', meaning: '发展；开发', example: 'The city is developing rapidly.', exampleCn: '这座城市正在快速发展。' },
+          { id: 68, word: 'discipline', phonetic: '/ˈdɪsəplɪn/', meaning: '纪律；学科', example: 'Self-discipline is essential for success.', exampleCn: '自律对成功至关重要。' },
+          { id: 69, word: 'distinguish', phonetic: '/dɪˈstɪŋɡwɪʃ/', meaning: '区分；辨别', example: 'Can you distinguish between the two colors?', exampleCn: '你能区分这两种颜色吗？' },
+          { id: 70, word: 'distribute', phonetic: '/dɪˈstrɪbjuːt/', meaning: '分配；分发', example: 'The organization distributes food to the poor.', exampleCn: '该组织向穷人分发食物。' },
+          { id: 71, word: 'economy', phonetic: '/ɪˈkɑːnəmi/', meaning: '经济', example: 'The global economy is changing fast.', exampleCn: '全球经济正在快速变化。' },
+          { id: 72, word: 'efficient', phonetic: '/ɪˈfɪʃnt/', meaning: '高效的', example: 'This new machine is very efficient.', exampleCn: '这台新机器非常高效。' },
+          { id: 73, word: 'eliminate', phonetic: '/ɪˈlɪmɪneɪt/', meaning: '消除；淘汰', example: 'We must eliminate poverty in all its forms.', exampleCn: '我们必须消除一切形式的贫困。' },
+          { id: 74, word: 'embrace', phonetic: '/ɪmˈbreɪs/', meaning: '拥抱；接受', example: 'We should embrace new technology.', exampleCn: '我们应该拥抱新技术。' },
+          { id: 75, word: 'emerge', phonetic: '/iˈmɜːrdʒ/', meaning: '出现；浮现', example: 'New problems emerged during the project.', exampleCn: '项目过程中出现了新问题。' },
+          { id: 76, word: 'employ', phonetic: '/ɪmˈplɔɪ/', meaning: '雇用；使用', example: 'The company employs over 500 people.', exampleCn: '这家公司雇用了500多人。' },
+          { id: 77, word: 'encounter', phonetic: '/ɪnˈkaʊntər/', meaning: '遇到；遭遇', example: 'We encountered many difficulties on the way.', exampleCn: '我们在路上遇到了许多困难。' },
+          { id: 78, word: 'enormous', phonetic: '/ɪˈnɔːrməs/', meaning: '巨大的', example: 'The building is of enormous size.', exampleCn: '这座建筑规模巨大。' },
+          { id: 79, word: 'enterprise', phonetic: '/ˈentərpraɪz/', meaning: '企业；事业', example: 'Small enterprises are the backbone of the economy.', exampleCn: '小企业是经济的支柱。' },
+          { id: 80, word: 'essential', phonetic: '/ɪˈsenʃl/', meaning: '必要的；本质的', example: 'Water is essential for life.', exampleCn: '水是生命所必需的。' }
+        ]
+      },
+      {
+        name: 'Unit 5 - 教育科技',
+        words: [
+          { id: 81, word: 'evaluate', phonetic: '/ɪˈvæljueɪt/', meaning: '评估；评价', example: 'Teachers evaluate students\' performance regularly.', exampleCn: '教师定期评估学生的表现。' },
+          { id: 82, word: 'evidence', phonetic: '/ˈevɪdəns/', meaning: '证据', example: 'There is no evidence to support this claim.', exampleCn: '没有证据支持这种说法。' },
+          { id: 83, word: 'evolve', phonetic: '/iˈvɑːlv/', meaning: '进化；发展', example: 'Technology continues to evolve rapidly.', exampleCn: '技术持续快速发展。' },
+          { id: 84, word: 'exchange', phonetic: '/ɪksˈtʃeɪndʒ/', meaning: '交换；交流', example: 'We had an exchange of ideas.', exampleCn: '我们交流了想法。' },
+          { id: 85, word: 'exist', phonetic: '/ɪɡˈzɪst/', meaning: '存在', example: 'Do aliens really exist?', exampleCn: '外星人真的存在吗？' },
+          { id: 86, word: 'expand', phonetic: '/ɪkˈspænd/', meaning: '扩展；膨胀', example: 'The company plans to expand overseas.', exampleCn: '公司计划向海外扩张。' },
+          { id: 87, word: 'expect', phonetic: '/ɪkˈspekt/', meaning: '期望；预计', example: 'I expect to finish the work by Friday.', exampleCn: '我预计周五前完成工作。' },
+          { id: 88, word: 'explore', phonetic: '/ɪkˈsplɔːr/', meaning: '探索；探究', example: 'We should explore all possibilities.', exampleCn: '我们应该探索所有的可能性。' },
+          { id: 89, word: 'feature', phonetic: '/ˈfiːtʃər/', meaning: '特征；特色', example: 'This phone has many new features.', exampleCn: '这款手机有很多新功能。' },
+          { id: 90, word: 'flexible', phonetic: '/ˈfleksəbl/', meaning: '灵活的', example: 'We offer flexible working hours.', exampleCn: '我们提供灵活的工作时间。' },
+          { id: 91, word: 'focus', phonetic: '/ˈfoʊkəs/', meaning: '集中；焦点', example: 'You need to focus on your studies.', exampleCn: '你需要专注于你的学习。' },
+          { id: 92, word: 'foundation', phonetic: '/faʊnˈdeɪʃn/', meaning: '基础；基金会', example: 'A good education lays a solid foundation for life.', exampleCn: '良好的教育为人生奠定坚实的基础。' },
+          { id: 93, word: 'function', phonetic: '/ˈfʌŋkʃn/', meaning: '功能；作用', example: 'What is the function of this button?', exampleCn: '这个按钮有什么功能？' },
+          { id: 94, word: 'generate', phonetic: '/ˈdʒenəreɪt/', meaning: '产生；生成', example: 'The wind farm generates electricity.', exampleCn: '风力发电场产生电力。' },
+          { id: 95, word: 'genuine', phonetic: '/ˈdʒenjuɪn/', meaning: '真正的；真诚的', example: 'She showed genuine concern for others.', exampleCn: '她对别人表现出真诚的关心。' },
+          { id: 96, word: 'global', phonetic: '/ˈɡloʊbl/', meaning: '全球的', example: 'Climate change is a global issue.', exampleCn: '气候变化是一个全球性问题。' },
+          { id: 97, word: 'gradual', phonetic: '/ˈɡrædʒuəl/', meaning: '逐渐的', example: 'There has been a gradual improvement.', exampleCn: '已经有了逐渐的改善。' },
+          { id: 98, word: 'guarantee', phonetic: '/ˌɡærənˈtiː/', meaning: '保证；担保', example: 'Hard work does not guarantee success.', exampleCn: '努力工作并不能保证成功。' },
+          { id: 99, word: 'identify', phonetic: '/aɪˈdentɪfaɪ/', meaning: '识别；确认', example: 'Can you identify the suspect?', exampleCn: '你能认出嫌疑人吗？' },
+          { id: 100, word: 'ignore', phonetic: '/ɪɡˈnɔːr/', meaning: '忽视；忽略', example: 'You cannot ignore the facts.', exampleCn: '你不能忽视事实。' }
+        ]
+      },
+      {
+        name: 'Unit 6 - 社会生活',
+        words: [
+          { id: 101, word: 'illustrate', phonetic: '/ˈɪləstreɪt/', meaning: '说明；阐明', example: 'Let me illustrate my point with an example.', exampleCn: '让我用一个例子来说明我的观点。' },
+          { id: 102, word: 'impact', phonetic: '/ˈɪmpækt/', meaning: '影响；冲击', example: 'Social media has a huge impact on our lives.', exampleCn: '社交媒体对我们的生活有巨大的影响。' },
+          { id: 103, word: 'implement', phonetic: '/ˈɪmplɪment/', meaning: '实施；执行', example: 'The government implemented new policies.', exampleCn: '政府实施了新政策。' },
+          { id: 104, word: 'imply', phonetic: '/ɪmˈplaɪ/', meaning: '暗示；意味着', example: 'What are you implying?', exampleCn: '你在暗示什么？' },
+          { id: 105, word: 'income', phonetic: '/ˈɪnkʌm/', meaning: '收入', example: 'She has a steady monthly income.', exampleCn: '她有稳定的月收入。' },
+          { id: 106, word: 'increase', phonetic: '/ɪnˈkriːs/', meaning: '增加；增长', example: 'The price of oil continues to increase.', exampleCn: '油价继续上涨。' },
+          { id: 107, word: 'indicate', phonetic: '/ˈɪndɪkeɪt/', meaning: '表明；指示', example: 'Research indicates that exercise improves memory.', exampleCn: '研究表明运动可以改善记忆力。' },
+          { id: 108, word: 'individual', phonetic: '/ˌɪndɪˈvɪdʒuəl/', meaning: '个人；个体', example: 'Every individual has the right to education.', exampleCn: '每个人都有受教育的权利。' },
+          { id: 109, word: 'influence', phonetic: '/ˈɪnfluəns/', meaning: '影响；势力', example: 'Parents have a great influence on their children.', exampleCn: '父母对孩子有很大的影响。' },
+          { id: 110, word: 'innocent', phonetic: '/ˈɪnəsnt/', meaning: '无辜的；天真的', example: 'He was proved innocent in court.', exampleCn: '他在法庭上被证明是无辜的。' },
+          { id: 111, word: 'innovation', phonetic: '/ˌɪnəˈveɪʃn/', meaning: '创新', example: 'Innovation is the key to growth.', exampleCn: '创新是增长的关键。' },
+          { id: 112, word: 'inspire', phonetic: '/ɪnˈspaɪər/', meaning: '激励；启发', example: 'His story inspires me to work harder.', exampleCn: '他的故事激励我更加努力。' },
+          { id: 113, word: 'institute', phonetic: '/ˈɪnstɪtuːt/', meaning: '学院；机构', example: 'He works at a research institute.', exampleCn: '他在一家研究所工作。' },
+          { id: 114, word: 'intelligent', phonetic: '/ɪnˈtelɪdʒənt/', meaning: '聪明的；智能的', example: 'Dolphins are highly intelligent animals.', exampleCn: '海豚是高度智能的动物。' },
+          { id: 115, word: 'interpret', phonetic: '/ɪnˈtɜːrprɪt/', meaning: '解释；口译', example: 'How do you interpret this poem?', exampleCn: '你如何解读这首诗？' },
+          { id: 116, word: 'involve', phonetic: '/ɪnˈvɑːlv/', meaning: '涉及；包含', example: 'The job involves a lot of traveling.', exampleCn: '这份工作需要经常出差。' },
+          { id: 117, word: 'isolate', phonetic: '/ˈaɪsəleɪt/', meaning: '隔离；孤立', example: 'The patient was isolated from others.', exampleCn: '病人被与其他人隔离开来。' },
+          { id: 118, word: 'justify', phonetic: '/ˈdʒʌstɪfaɪ/', meaning: '证明...正当', example: 'How can you justify such behavior?', exampleCn: '你如何为这种行为辩解？' },
+          { id: 119, word: 'launch', phonetic: '/lɔːntʃ/', meaning: '发射；发起', example: 'The company launched a new product.', exampleCn: '公司推出了一款新产品。' },
+          { id: 120, word: 'maintain', phonetic: '/meɪnˈteɪn/', meaning: '维持；保养', example: 'You should maintain a healthy lifestyle.', exampleCn: '你应该保持健康的生活方式。' }
+        ]
+      },
+      {
+        name: 'Unit 7 - 抽象概念',
+        words: [
+          { id: 121, word: 'manage', phonetic: '/ˈmænɪdʒ/', meaning: '管理；设法', example: 'She manages a team of ten people.', exampleCn: '她管理着一个十人团队。' },
+          { id: 122, word: 'measure', phonetic: '/ˈmeʒər/', meaning: '测量；措施', example: 'The government took measures to control prices.', exampleCn: '政府采取措施控制物价。' },
+          { id: 123, word: 'mental', phonetic: '/ˈmentl/', meaning: '精神的；心理的', example: 'Mental health is as important as physical health.', exampleCn: '心理健康和身体健康一样重要。' },
+          { id: 124, word: 'military', phonetic: '/ˈmɪləteri/', meaning: '军事的；军队', example: 'He served in the military for five years.', exampleCn: '他在军队服役了五年。' },
+          { id: 125, word: 'motivate', phonetic: '/ˈmoʊtɪveɪt/', meaning: '激励；激发', example: 'A good teacher can motivate students to learn.', exampleCn: '好的老师能激励学生学习。' },
+          { id: 126, word: 'negative', phonetic: '/ˈneɡətɪv/', meaning: '消极的；否定的', example: 'Try not to be so negative about everything.', exampleCn: '尽量不要对所有事情都那么消极。' },
+          { id: 127, word: 'negotiate', phonetic: '/nɪˈɡoʊʃieɪt/', meaning: '谈判；协商', example: 'The two sides are negotiating a peace deal.', exampleCn: '双方正在谈判和平协议。' },
+          { id: 128, word: 'network', phonetic: '/ˈnetwɜːrk/', meaning: '网络', example: 'Social networks connect people around the world.', exampleCn: '社交网络连接了世界各地的人们。' },
+          { id: 129, word: 'normal', phonetic: '/ˈnɔːrml/', meaning: '正常的', example: 'It is normal to feel nervous before an exam.', exampleCn: '考试前感到紧张是正常的。' },
+          { id: 130, word: 'observe', phonetic: '/əbˈzɜːrv/', meaning: '观察；遵守', example: 'Scientists observe natural phenomena.', exampleCn: '科学家观察自然现象。' },
+          { id: 131, word: 'obstacle', phonetic: '/ˈɑːbstəkl/', meaning: '障碍', example: 'Lack of money is the main obstacle.', exampleCn: '缺钱是主要障碍。' },
+          { id: 132, word: 'occupy', phonetic: '/ˈɑːkjupaɪ/', meaning: '占用；占据', example: 'Reading occupies most of my free time.', exampleCn: '阅读占用了我大部分的空闲时间。' },
+          { id: 133, word: 'operate', phonetic: '/ˈɑːpəreɪt/', meaning: '操作；经营', example: 'Do you know how to operate this machine?', exampleCn: '你知道如何操作这台机器吗？' },
+          { id: 134, word: 'opportunity', phonetic: '/ˌɑːpərˈtuːnəti/', meaning: '机会', example: 'This is a great opportunity for you.', exampleCn: '这对你来说是一个很好的机会。' },
+          { id: 135, word: 'oppose', phonetic: '/əˈpoʊz/', meaning: '反对', example: 'Many people opposed the new law.', exampleCn: '许多人反对新法律。' },
+          { id: 136, word: 'organize', phonetic: '/ˈɔːrɡənaɪz/', meaning: '组织', example: 'They organized a charity concert.', exampleCn: '他们组织了一场慈善音乐会。' },
+          { id: 137, word: 'overcome', phonetic: '/ˌoʊvərˈkʌm/', meaning: '克服', example: 'We must overcome our fears.', exampleCn: '我们必须克服恐惧。' },
+          { id: 138, word: 'participate', phonetic: '/pɑːrˈtɪsɪpeɪt/', meaning: '参与', example: 'Everyone is encouraged to participate.', exampleCn: '鼓励每个人都参与。' },
+          { id: 139, word: 'perceive', phonetic: '/pərˈsiːv/', meaning: '感知；察觉', example: 'People perceive colors differently.', exampleCn: '人们对颜色的感知不同。' },
+          { id: 140, word: 'perform', phonetic: '/pərˈfɔːrm/', meaning: '表演；执行', example: 'The team performed well in the competition.', exampleCn: '团队在比赛中表现出色。' }
+        ]
+      },
+      {
+        name: 'Unit 8 - 综合高频',
+        words: [
+          { id: 141, word: 'phenomenon', phonetic: '/fɪˈnɑːmɪnən/', meaning: '现象', example: 'This is a common social phenomenon.', exampleCn: '这是一种常见的社会现象。' },
+          { id: 142, word: 'policy', phonetic: '/ˈpɑːləsi/', meaning: '政策；保险单', example: 'The new policy will take effect next month.', exampleCn: '新政策将于下月生效。' },
+          { id: 143, word: 'potential', phonetic: '/pəˈtenʃl/', meaning: '潜力；潜在的', example: 'She has great potential as a singer.', exampleCn: '她作为歌手有很大的潜力。' },
+          { id: 144, word: 'poverty', phonetic: '/ˈpɑːvərti/', meaning: '贫困', example: 'Millions of people live in poverty.', exampleCn: '数百万人生活在贫困之中。' },
+          { id: 145, word: 'predict', phonetic: '/prɪˈdɪkt/', meaning: '预测', example: 'It is hard to predict the future.', exampleCn: '很难预测未来。' },
+          { id: 146, word: 'prejudice', phonetic: '/ˈpredʒudɪs/', meaning: '偏见', example: 'We should fight against prejudice.', exampleCn: '我们应该反对偏见。' },
+          { id: 147, word: 'preserve', phonetic: '/prɪˈzɜːrv/', meaning: '保护；保存', example: 'We must preserve our cultural heritage.', exampleCn: '我们必须保护我们的文化遗产。' },
+          { id: 148, word: 'pressure', phonetic: '/ˈpreʃər/', meaning: '压力', example: 'He works well under pressure.', exampleCn: '他在压力下工作得很好。' },
+          { id: 149, word: 'principle', phonetic: '/ˈprɪnsəpl/', meaning: '原则；原理', example: 'She sticks to her principles.', exampleCn: '她坚持自己的原则。' },
+          { id: 150, word: 'priority', phonetic: '/praɪˈɔːrəti/', meaning: '优先事项', example: 'Education should be a top priority.', exampleCn: '教育应该是重中之重。' },
+          { id: 151, word: 'procedure', phonetic: '/prəˈsiːdʒər/', meaning: '程序；步骤', example: 'Please follow the standard procedure.', exampleCn: '请按照标准程序操作。' },
+          { id: 152, word: 'progress', phonetic: '/ˈprɑːɡres/', meaning: '进步；进展', example: 'She is making good progress in her studies.', exampleCn: '她的学习取得了良好的进步。' },
+          { id: 153, word: 'promote', phonetic: '/prəˈmoʊt/', meaning: '促进；推广；晋升', example: 'Exercise promotes good health.', exampleCn: '运动促进健康。' },
+          { id: 154, word: 'propose', phonetic: '/prəˈpoʊz/', meaning: '提议；求婚', example: 'I propose that we take a short break.', exampleCn: '我提议我们短暂休息一下。' },
+          { id: 155, word: 'prospect', phonetic: '/ˈprɑːspekt/', meaning: '前景；可能性', example: 'The job has good prospects for promotion.', exampleCn: '这份工作有很好的晋升前景。' },
+          { id: 156, word: 'purchase', phonetic: '/ˈpɜːrtʃəs/', meaning: '购买', example: 'You can purchase tickets online.', exampleCn: '你可以在线购买门票。' },
+          { id: 157, word: 'pursue', phonetic: '/pərˈsuː/', meaning: '追求；从事', example: 'She decided to pursue a career in medicine.', exampleCn: '她决定从事医学事业。' },
+          { id: 158, word: 'quality', phonetic: '/ˈkwɑːləti/', meaning: '质量；品质', example: 'We only sell products of the highest quality.', exampleCn: '我们只销售最高质量的产品。' },
+          { id: 159, word: 'random', phonetic: '/ˈrændəm/', meaning: '随机的', example: 'The winner was chosen at random.', exampleCn: '获胜者是随机选出的。' },
+          { id: 160, word: 'range', phonetic: '/reɪndʒ/', meaning: '范围；幅度', example: 'We offer a wide range of services.', exampleCn: '我们提供广泛的服务。' }
+        ]
+      },
+      {
+        name: 'Unit 9 - 行为与状态',
+        words: [
+          { id: 161, word: 'react', phonetic: '/riˈækt/', meaning: '反应；应对', example: 'How did he react to the news?', exampleCn: '他对这个消息有什么反应？' },
+          { id: 162, word: 'recognize', phonetic: '/ˈrekəɡnaɪz/', meaning: '认出；承认', example: 'I didn\'t recognize you at first.', exampleCn: '一开始我没认出你来。' },
+          { id: 163, word: 'recommend', phonetic: '/ˌrekəˈmend/', meaning: '推荐；建议', example: 'Can you recommend a good restaurant?', exampleCn: '你能推荐一家好餐厅吗？' },
+          { id: 164, word: 'recover', phonetic: '/rɪˈkʌvər/', meaning: '恢复；康复', example: 'It took her months to recover from the illness.', exampleCn: '她花了几个月才从疾病中恢复。' },
+          { id: 165, word: 'reduce', phonetic: '/rɪˈduːs/', meaning: '减少；降低', example: 'We need to reduce our expenses.', exampleCn: '我们需要减少开支。' },
+          { id: 166, word: 'reflect', phonetic: '/rɪˈflekt/', meaning: '反映；反思', example: 'The mirror reflects light.', exampleCn: '镜子反射光线。' },
+          { id: 167, word: 'reject', phonetic: '/rɪˈdʒekt/', meaning: '拒绝；排斥', example: 'The proposal was rejected by the committee.', exampleCn: '提案被委员会拒绝了。' },
+          { id: 168, word: 'release', phonetic: '/rɪˈliːs/', meaning: '释放；发布', example: 'The new album will be released next week.', exampleCn: '新专辑将于下周发布。' },
+          { id: 169, word: 'relevant', phonetic: '/ˈreləvənt/', meaning: '相关的', example: 'Is this information relevant to the case?', exampleCn: '这个信息与案件相关吗？' },
+          { id: 170, word: 'rely', phonetic: '/rɪˈlaɪ/', meaning: '依靠；信赖', example: 'You can rely on me to help you.', exampleCn: '你可以依靠我来帮助你。' },
+          { id: 171, word: 'remain', phonetic: '/rɪˈmeɪn/', meaning: '保持；剩余', example: 'Please remain seated until the plane stops.', exampleCn: '请保持就座直到飞机停稳。' },
+          { id: 172, word: 'replace', phonetic: '/rɪˈpleɪs/', meaning: '取代；替换', example: 'Robots may replace human workers someday.', exampleCn: '机器人有一天可能会取代人类工人。' },
+          { id: 173, word: 'represent', phonetic: '/ˌreprɪˈzent/', meaning: '代表；表现', example: 'The red line represents danger.', exampleCn: '红线代表危险。' },
+          { id: 174, word: 'require', phonetic: '/rɪˈkwaɪər/', meaning: '需要；要求', example: 'This job requires a lot of patience.', exampleCn: '这份工作需要很大的耐心。' },
+          { id: 175, word: 'resolve', phonetic: '/rɪˈzɑːlv/', meaning: '解决；决心', example: 'We need to resolve this problem quickly.', exampleCn: '我们需要快速解决这个问题。' },
+          { id: 176, word: 'resource', phonetic: '/ˈriːsɔːrs/', meaning: '资源', example: 'Natural resources are limited.', exampleCn: '自然资源是有限的。' },
+          { id: 177, word: 'respond', phonetic: '/rɪˈspɑːnd/', meaning: '回应；响应', example: 'Please respond to my email as soon as possible.', exampleCn: '请尽快回复我的邮件。' },
+          { id: 178, word: 'responsible', phonetic: '/rɪˈspɑːnsəbl/', meaning: '负责的', example: 'Who is responsible for this mess?', exampleCn: '谁对这团糟负责？' },
+          { id: 179, word: 'reveal', phonetic: '/rɪˈviːl/', meaning: '揭示；透露', example: 'The report reveals serious problems.', exampleCn: '报告揭示了严重的问题。' },
+          { id: 180, word: 'revolution', phonetic: '/ˌrevəˈluːʃn/', meaning: '革命', example: 'The internet has caused a revolution in communication.', exampleCn: '互联网引发了通信革命。' }
+        ]
+      },
+      {
+        name: 'Unit 10 - 常用形容词',
+        words: [
+          { id: 181, word: 'sacrifice', phonetic: '/ˈsækrɪfaɪs/', meaning: '牺牲；奉献', example: 'Parents make many sacrifices for their children.', exampleCn: '父母为孩子做出许多牺牲。' },
+          { id: 182, word: 'satisfy', phonetic: '/ˈsætɪsfaɪ/', meaning: '满足；使满意', example: 'Nothing seems to satisfy him.', exampleCn: '似乎没有什么能让他满意。' },
+          { id: 183, word: 'schedule', phonetic: '/ˈskedʒuːl/', meaning: '日程；时间表', example: 'I have a busy schedule this week.', exampleCn: '我这周的日程很满。' },
+          { id: 184, word: 'security', phonetic: '/sɪˈkjʊrəti/', meaning: '安全；保障', example: 'National security is a top priority.', exampleCn: '国家安全是重中之重。' },
+          { id: 185, word: 'select', phonetic: '/sɪˈlekt/', meaning: '选择', example: 'Please select your preferred language.', exampleCn: '请选择你偏好的语言。' },
+          { id: 186, word: 'separate', phonetic: '/ˈsepəreɪt/', meaning: '分开；分离', example: 'The wall separates the two rooms.', exampleCn: '这堵墙分隔了两个房间。' },
+          { id: 187, word: 'significant', phonetic: '/sɪɡˈnɪfɪkənt/', meaning: '重要的；显著的', example: 'There is a significant difference between the two.', exampleCn: '两者之间有显著的差异。' },
+          { id: 188, word: 'similar', phonetic: '/ˈsɪmələr/', meaning: '相似的', example: 'The two products are very similar.', exampleCn: '这两个产品非常相似。' },
+          { id: 189, word: 'solution', phonetic: '/səˈluːʃn/', meaning: '解决方案', example: 'We need to find a solution to this problem.', exampleCn: '我们需要找到这个问题的解决方案。' },
+          { id: 190, word: 'specific', phonetic: '/spəˈsɪfɪk/', meaning: '具体的；特定的', example: 'Can you be more specific?', exampleCn: '你能说得更具体一点吗？' },
+          { id: 191, word: 'stable', phonetic: '/ˈsteɪbl/', meaning: '稳定的', example: 'The economy is not very stable right now.', exampleCn: '目前经济不太稳定。' },
+          { id: 192, word: 'standard', phonetic: '/ˈstændərd/', meaning: '标准', example: 'This product meets international standards.', exampleCn: '该产品符合国际标准。' },
+          { id: 193, word: 'strategy', phonetic: '/ˈstrætədʒi/', meaning: '策略', example: 'We need a new marketing strategy.', exampleCn: '我们需要新的营销策略。' },
+          { id: 194, word: 'struggle', phonetic: '/ˈstrʌɡl/', meaning: '奋斗；挣扎', example: 'Life is a constant struggle.', exampleCn: '生活是一场不断的奋斗。' },
+          { id: 195, word: 'sufficient', phonetic: '/səˈfɪʃnt/', meaning: '足够的', example: 'Is the information sufficient for your report?', exampleCn: '这些信息对你的报告足够吗？' },
+          { id: 196, word: 'survive', phonetic: '/sərˈvaɪv/', meaning: '生存；幸存', example: 'Only a few people survived the earthquake.', exampleCn: '只有少数人在这次地震中幸存。' },
+          { id: 197, word: 'suspect', phonetic: '/səˈspekt/', meaning: '怀疑；嫌疑犯', example: 'I suspect that he is lying.', exampleCn: '我怀疑他在说谎。' },
+          { id: 198, word: 'symbol', phonetic: '/ˈsɪmbl/', meaning: '象征；符号', example: 'The dove is a symbol of peace.', exampleCn: '鸽子是和平的象征。' },
+          { id: 199, word: 'tendency', phonetic: '/ˈtendənsi/', meaning: '趋势；倾向', example: 'There is a tendency for prices to rise.', exampleCn: '价格有上涨的趋势。' },
+          { id: 200, word: 'tradition', phonetic: '/trəˈdɪʃn/', meaning: '传统', example: 'We should respect cultural traditions.', exampleCn: '我们应该尊重文化传统。' }
+        ]
+      },
+      {
+        name: 'Unit 11 - 动词进阶',
+        words: [
+          { id: 201, word: 'transfer', phonetic: '/trænsˈfɜːr/', meaning: '转移；调动', example: 'I need to transfer money to her account.', exampleCn: '我需要把钱转到她的账户。' },
+          { id: 202, word: 'transform', phonetic: '/trænsˈfɔːrm/', meaning: '转变；改造', example: 'Technology has transformed our lives.', exampleCn: '科技改变了我们的生活。' },
+          { id: 203, word: 'trend', phonetic: '/trend/', meaning: '趋势；潮流', example: 'This is the latest fashion trend.', exampleCn: '这是最新的时尚潮流。' },
+          { id: 204, word: 'ultimate', phonetic: '/ˈʌltɪmət/', meaning: '最终的；根本的', example: 'The ultimate decision rests with the manager.', exampleCn: '最终决定权在经理手中。' },
+          { id: 205, word: 'undergo', phonetic: '/ˌʌndərˈɡoʊ/', meaning: '经历；遭受', example: 'The city has undergone many changes.', exampleCn: '这座城市经历了许多变化。' },
+          { id: 206, word: 'unique', phonetic: '/juˈniːk/', meaning: '独特的', example: 'Everyone has a unique personality.', exampleCn: '每个人都有独特的个性。' },
+          { id: 207, word: 'universal', phonetic: '/ˌjuːnɪˈvɜːrsl/', meaning: '普遍的；通用的', example: 'Music is a universal language.', exampleCn: '音乐是一种通用语言。' },
+          { id: 208, word: 'urge', phonetic: '/ɜːrdʒ/', meaning: '敦促；强烈欲望', example: 'I urge you to reconsider your decision.', exampleCn: '我敦促你重新考虑你的决定。' },
+          { id: 209, word: 'utilize', phonetic: '/ˈjuːtəlaɪz/', meaning: '利用', example: 'We should utilize solar energy more.', exampleCn: '我们应该更多地利用太阳能。' },
+          { id: 210, word: 'valid', phonetic: '/ˈvælɪd/', meaning: '有效的；合理的', example: 'Your passport is no longer valid.', exampleCn: '你的护照不再有效了。' },
+          { id: 211, word: 'variety', phonetic: '/vəˈraɪəti/', meaning: '多样性；种类', example: 'We offer a variety of courses.', exampleCn: '我们提供各种课程。' },
+          { id: 212, word: 'version', phonetic: '/ˈvɜːrʒn/', meaning: '版本', example: 'This is the latest version of the software.', exampleCn: '这是该软件的最新版本。' },
+          { id: 213, word: 'victim', phonetic: '/ˈvɪktɪm/', meaning: '受害者', example: 'The flood victims need our help.', exampleCn: '洪水灾民需要我们的帮助。' },
+          { id: 214, word: 'visible', phonetic: '/ˈvɪzəbl/', meaning: '可见的；明显的', example: 'The stars are clearly visible tonight.', exampleCn: '今晚星星清晰可见。' },
+          { id: 215, word: 'vision', phonetic: '/ˈvɪʒn/', meaning: '视力；愿景', example: 'She has a clear vision for the future.', exampleCn: '她对未来有清晰的愿景。' },
+          { id: 216, word: 'volume', phonetic: '/ˈvɑːljuːm/', meaning: '体积；音量；卷', example: 'Please turn down the volume.', exampleCn: '请把音量调低。' },
+          { id: 217, word: 'volunteer', phonetic: '/ˌvɑːlənˈtɪr/', meaning: '志愿者；自愿', example: 'Many people volunteered to help.', exampleCn: '许多人自愿提供帮助。' },
+          { id: 218, word: 'wealth', phonetic: '/welθ/', meaning: '财富', example: 'Health is more important than wealth.', exampleCn: '健康比财富更重要。' },
+          { id: 219, word: 'welfare', phonetic: '/ˈwelfer/', meaning: '福利；幸福', example: 'The government provides welfare for the poor.', exampleCn: '政府为穷人提供福利。' },
+          { id: 220, word: 'witness', phonetic: '/ˈwɪtnəs/', meaning: '目击者；见证', example: 'I was a witness to the accident.', exampleCn: '我是事故的目击者。' }
+        ]
+      },
+      {
+        name: 'Unit 12 - 常见短语动词',
+        words: [
+          { id: 221, word: 'break down', phonetic: '/breɪk daʊn/', meaning: '分解；出故障；崩溃', example: 'The car broke down on the highway.', exampleCn: '汽车在高速公路上抛锚了。' },
+          { id: 222, word: 'break up', phonetic: '/breɪk ʌp/', meaning: '分手；解散', example: 'They decided to break up after five years.', exampleCn: '五年后他们决定分手。' },
+          { id: 223, word: 'bring up', phonetic: '/brɪŋ ʌp/', meaning: '抚养；提出', example: 'She brought up three children on her own.', exampleCn: '她独自抚养了三个孩子。' },
+          { id: 224, word: 'call off', phonetic: '/kɔːl ɔːf/', meaning: '取消', example: 'The match was called off due to rain.', exampleCn: '比赛因雨取消了。' },
+          { id: 225, word: 'carry out', phonetic: '/ˈkæri aʊt/', meaning: '执行；实施', example: 'The plan was carried out successfully.', exampleCn: '计划被成功执行了。' },
+          { id: 226, word: 'come across', phonetic: '/kʌm əˈkrɔːs/', meaning: '偶然遇到', example: 'I came across an old photo yesterday.', exampleCn: '我昨天偶然发现了一张旧照片。' },
+          { id: 227, word: 'come up with', phonetic: '/kʌm ʌp wɪð/', meaning: '想出；提出', example: 'She came up with a brilliant idea.', exampleCn: '她想出了一个绝妙的主意。' },
+          { id: 228, word: 'cut down', phonetic: '/kʌt daʊn/', meaning: '削减；砍倒', example: 'We need to cut down on expenses.', exampleCn: '我们需要削减开支。' },
+          { id: 229, word: 'deal with', phonetic: '/diːl wɪð/', meaning: '处理；应对', example: 'How do you deal with stress?', exampleCn: '你如何应对压力？' },
+          { id: 230, word: 'figure out', phonetic: '/ˈfɪɡjər aʊt/', meaning: '弄清楚；算出', example: 'I cannot figure out how to solve this problem.', exampleCn: '我想不出如何解决这个问题。' },
+          { id: 231, word: 'get along', phonetic: '/ɡet əˈlɔːŋ/', meaning: '相处；进展', example: 'Do you get along with your colleagues?', exampleCn: '你和同事相处得好吗？' },
+          { id: 232, word: 'give up', phonetic: '/ɡɪv ʌp/', meaning: '放弃', example: 'Never give up on your dreams.', exampleCn: '永远不要放弃你的梦想。' },
+          { id: 233, word: 'go through', phonetic: '/ɡoʊ θruː/', meaning: '经历；仔细检查', example: 'She is going through a difficult time.', exampleCn: '她正在经历一段困难时期。' },
+          { id: 234, word: 'hand in', phonetic: '/hænd ɪn/', meaning: '提交；上交', example: 'Please hand in your homework by Friday.', exampleCn: '请在周五前交作业。' },
+          { id: 235, word: 'hold on', phonetic: '/hoʊld ɑːn/', meaning: '坚持；稍等', example: 'Hold on a moment, I will be right back.', exampleCn: '稍等一下，我马上回来。' },
+          { id: 236, word: 'keep up', phonetic: '/kiːp ʌp/', meaning: '保持；跟上', example: 'Keep up the good work!', exampleCn: '继续保持好的工作！' },
+          { id: 237, word: 'look forward to', phonetic: '/lʊk ˈfɔːrwərd tuː/', meaning: '期待', example: 'I am looking forward to seeing you.', exampleCn: '我期待见到你。' },
+          { id: 238, word: 'look into', phonetic: '/lʊk ˈɪntuː/', meaning: '调查', example: 'The police are looking into the matter.', exampleCn: '警方正在调查此事。' },
+          { id: 239, word: 'make up', phonetic: '/meɪk ʌp/', meaning: '组成；弥补；化妆', example: 'Women make up 60% of the workforce.', exampleCn: '女性占劳动力的60%。' },
+          { id: 240, word: 'pass away', phonetic: '/pæs əˈweɪ/', meaning: '去世', example: 'His grandfather passed away last year.', exampleCn: '他的祖父去年去世了。' }
+        ]
+      },
+      {
+        name: 'Unit 13 - 继续短语动词',
+        words: [
+          { id: 241, word: 'point out', phonetic: '/pɔɪnt aʊt/', meaning: '指出', example: 'He pointed out several mistakes in my report.', exampleCn: '他指出了我报告中的几个错误。' },
+          { id: 242, word: 'put off', phonetic: '/pʊt ɔːf/', meaning: '推迟；拖延', example: 'Never put off till tomorrow what you can do today.', exampleCn: '今日事今日毕。' },
+          { id: 243, word: 'put up with', phonetic: '/pʊt ʌp wɪð/', meaning: '忍受', example: 'I cannot put up with his rudeness anymore.', exampleCn: '我再也无法忍受他的粗鲁了。' },
+          { id: 244, word: 'run into', phonetic: '/rʌn ˈɪntuː/', meaning: '偶遇；撞上', example: 'I ran into an old friend at the mall.', exampleCn: '我在商场偶遇了一位老朋友。' },
+          { id: 245, word: 'run out of', phonetic: '/rʌn aʊt ʌv/', meaning: '用完；耗尽', example: 'We are running out of time.', exampleCn: '我们的时间快用完了。' },
+          { id: 246, word: 'set up', phonetic: '/set ʌp/', meaning: '建立；设立', example: 'They set up a new company last year.', exampleCn: '他们去年成立了一家新公司。' },
+          { id: 247, word: 'show off', phonetic: '/ʃoʊ ɔːf/', meaning: '炫耀', example: 'He likes to show off his new car.', exampleCn: '他喜欢炫耀他的新车。' },
+          { id: 248, word: 'take off', phonetic: '/teɪk ɔːf/', meaning: '起飞；脱下', example: 'The plane will take off in ten minutes.', exampleCn: '飞机将在十分钟后起飞。' },
+          { id: 249, word: 'take over', phonetic: '/teɪk ˈoʊvər/', meaning: '接管', example: 'The company was taken over by a larger one.', exampleCn: '这家公司被一家更大的公司接管了。' },
+          { id: 250, word: 'turn down', phonetic: '/tɜːrn daʊn/', meaning: '拒绝；调低', example: 'She turned down the job offer.', exampleCn: '她拒绝了这份工作。' },
+          { id: 251, word: 'turn out', phonetic: '/tɜːrn aʊt/', meaning: '结果是；证明是', example: 'It turned out to be a great success.', exampleCn: '结果证明这是一个巨大的成功。' },
+          { id: 252, word: 'turn up', phonetic: '/tɜːrn ʌp/', meaning: '出现；调高', example: 'He didn\'t turn up for the meeting.', exampleCn: '他没有出席会议。' },
+          { id: 253, word: 'work out', phonetic: '/wɜːrk aʊt/', meaning: '解决；锻炼', example: 'We need to work out a solution together.', exampleCn: '我们需要一起想出一个解决方案。' },
+          { id: 254, word: 'abide by', phonetic: '/əˈbaɪd baɪ/', meaning: '遵守', example: 'We must abide by the rules.', exampleCn: '我们必须遵守规则。' },
+          { id: 255, word: 'account for', phonetic: '/əˈkaʊnt fɔːr/', meaning: '解释；占...比例', example: 'How do you account for the delay?', exampleCn: '你如何解释这次延误？' },
+          { id: 256, word: 'back up', phonetic: '/bæk ʌp/', meaning: '支持；备份', example: 'Make sure to back up your files regularly.', exampleCn: '确保定期备份你的文件。' },
+          { id: 257, word: 'break out', phonetic: '/breɪk aʊt/', meaning: '爆发；逃脱', example: 'A fire broke out in the building.', exampleCn: '大楼里发生了火灾。' },
+          { id: 258, word: 'bring about', phonetic: '/brɪŋ əˈbaʊt/', meaning: '引起；导致', example: 'What brought about the change in his attitude?', exampleCn: '是什么导致了他态度的改变？' },
+          { id: 259, word: 'carry on', phonetic: '/ˈkæri ɑːn/', meaning: '继续', example: 'Carry on with your work while I am away.', exampleCn: '我不在的时候继续你的工作。' },
+          { id: 260, word: 'catch up', phonetic: '/kætʃ ʌp/', meaning: '赶上', example: 'I need to catch up on my reading.', exampleCn: '我需要补上我的阅读。' }
+        ]
+      },
+      {
+        name: 'Unit 14 - 综合词组',
+        words: [
+          { id: 261, word: 'check in', phonetic: '/tʃek ɪn/', meaning: '登记；报到', example: 'We need to check in at the airport two hours early.', exampleCn: '我们需要提前两小时到机场办理登机手续。' },
+          { id: 262, word: 'come about', phonetic: '/kʌm əˈbaʊt/', meaning: '发生', example: 'How did this situation come about?', exampleCn: '这种情况是怎么发生的？' },
+          { id: 263, word: 'count on', phonetic: '/kaʊnt ɑːn/', meaning: '依靠；指望', example: 'You can count on me for support.', exampleCn: '你可以指望我的支持。' },
+          { id: 264, word: 'cut off', phonetic: '/kʌt ɔːf/', meaning: '切断；中断', example: 'The storm cut off our electricity.', exampleCn: '暴风雨切断了我们的电力。' },
+          { id: 265, word: 'drop out', phonetic: '/drɑːp aʊt/', meaning: '辍学；退出', example: 'He dropped out of school at sixteen.', exampleCn: '他16岁时辍学了。' },
+          { id: 266, word: 'end up', phonetic: '/end ʌp/', meaning: '最终；结果', example: 'We ended up staying home because of the rain.', exampleCn: '因为下雨我们最终待在家里。' },
+          { id: 267, word: 'fall behind', phonetic: '/fɔːl bɪˈhaɪnd/', meaning: '落后', example: 'If you miss too many classes, you will fall behind.', exampleCn: '如果你缺课太多，就会落后。' },
+          { id: 268, word: 'fill out', phonetic: '/fɪl aʊt/', meaning: '填写', example: 'Please fill out this application form.', exampleCn: '请填写这张申请表。' },
+          { id: 269, word: 'find out', phonetic: '/faɪnd aʊt/', meaning: '发现；查明', example: 'I need to find out what happened.', exampleCn: '我需要查明发生了什么。' },
+          { id: 270, word: 'get over', phonetic: '/ɡet ˈoʊvər/', meaning: '克服；恢复', example: 'It took him months to get over the breakup.', exampleCn: '他花了几个月才从分手中恢复过来。' },
+          { id: 271, word: 'give in', phonetic: '/ɡɪv ɪn/', meaning: '屈服；让步', example: 'Don\'t give in to pressure from others.', exampleCn: '不要屈服于他人的压力。' },
+          { id: 272, word: 'go ahead', phonetic: '/ɡoʊ əˈhed/', meaning: '继续；进行', example: 'Go ahead with your plan, I support you.', exampleCn: '继续你的计划吧，我支持你。' },
+          { id: 273, word: 'hang out', phonetic: '/hæŋ aʊt/', meaning: '闲逛', example: 'We used to hang out together after school.', exampleCn: '我们过去放学后经常一起闲逛。' },
+          { id: 274, word: 'hold back', phonetic: '/hoʊld bæk/', meaning: '阻止；抑制', example: 'She couldn\'t hold back her tears.', exampleCn: '她忍不住流下了眼泪。' },
+          { id: 275, word: 'lay off', phonetic: '/leɪ ɔːf/', meaning: '解雇', example: 'The company had to lay off 200 workers.', exampleCn: '公司不得不解雇了200名工人。' },
+          { id: 276, word: 'look up', phonetic: '/lʊk ʌp/', meaning: '查阅；向上看', example: 'You can look up the word in the dictionary.', exampleCn: '你可以在词典中查阅这个词。' },
+          { id: 277, word: 'make out', phonetic: '/meɪk aʊt/', meaning: '辨认；理解', example: 'I can\'t make out what he\'s saying.', exampleCn: '我听不清他在说什么。' },
+          { id: 278, word: 'pass on', phonetic: '/pæs ɑːn/', meaning: '传递；去世（委婉）', example: 'Please pass on this message to your team.', exampleCn: '请把这个消息传达给你的团队。' },
+          { id: 279, word: 'pick up', phonetic: '/pɪk ʌp/', meaning: '捡起；接人；学会', example: 'I will pick you up at the station.', exampleCn: '我会去车站接你。' },
+          { id: 280, word: 'pull through', phonetic: '/pʊl θruː/', meaning: '渡过难关；康复', example: 'With good care, he will pull through.', exampleCn: '有良好的护理，他会渡过难关的。' }
+        ]
+      },
+      {
+        name: 'Unit 15 - 常用表达',
+        words: [
+          { id: 281, word: 'put aside', phonetic: '/pʊt əˈsaɪd/', meaning: '放在一边；储蓄', example: 'You should put aside some money each month.', exampleCn: '你应该每月存一些钱。' },
+          { id: 282, word: 'rule out', phonetic: '/ruːl aʊt/', meaning: '排除', example: 'The police ruled out suicide.', exampleCn: '警方排除了自杀的可能。' },
+          { id: 283, word: 'see off', phonetic: '/siː ɔːf/', meaning: '送行', example: 'I went to the airport to see him off.', exampleCn: '我去机场送他。' },
+          { id: 284, word: 'settle down', phonetic: '/ˈsetl daʊn/', meaning: '定居；安定下来', example: 'It\'s time to settle down and start a family.', exampleCn: '是时候安定下来成家了。' },
+          { id: 285, word: 'show up', phonetic: '/ʃoʊ ʌp/', meaning: '出现；露面', example: 'He didn\'t show up for work today.', exampleCn: '他今天没来上班。' },
+          { id: 286, word: 'stand by', phonetic: '/stænd baɪ/', meaning: '支持；袖手旁观', example: 'I will stand by you no matter what.', exampleCn: '无论如何我都会支持你。' },
+          { id: 287, word: 'stand for', phonetic: '/stænd fɔːr/', meaning: '代表；支持', example: 'What does CEO stand for?', exampleCn: 'CEO代表什么？' },
+          { id: 288, word: 'stick to', phonetic: '/stɪk tuː/', meaning: '坚持', example: 'You should stick to your principles.', exampleCn: '你应该坚持你的原则。' },
+          { id: 289, word: 'take after', phonetic: '/teɪk ˈæftər/', meaning: '像（某人）', example: 'She takes after her mother in looks.', exampleCn: '她的长相像她妈妈。' },
+          { id: 290, word: 'take care of', phonetic: '/teɪk ker ʌv/', meaning: '照顾；处理', example: 'Who will take care of the children?', exampleCn: '谁来照顾孩子们？' },
+          { id: 291, word: 'think over', phonetic: '/θɪŋk ˈoʊvər/', meaning: '仔细考虑', example: 'Think it over before you make a decision.', exampleCn: '在做决定之前仔细考虑一下。' },
+          { id: 292, word: 'try on', phonetic: '/traɪ ɑːn/', meaning: '试穿', example: 'Can I try on this dress?', exampleCn: '我可以试穿这件裙子吗？' },
+          { id: 293, word: 'turn into', phonetic: '/tɜːrn ˈɪntuː/', meaning: '变成', example: 'The caterpillar turned into a butterfly.', exampleCn: '毛毛虫变成了蝴蝶。' },
+          { id: 294, word: 'use up', phonetic: '/juːz ʌp/', meaning: '用完', example: 'We\'ve used up all the paper.', exampleCn: '我们用完了所有的纸。' },
+          { id: 295, word: 'watch out', phonetic: '/wɑːtʃ aʊt/', meaning: '小心；注意', example: 'Watch out! There is a car coming.', exampleCn: '小心！有车来了。' },
+          { id: 296, word: 'wear out', phonetic: '/wer aʊt/', meaning: '磨损；使疲劳', example: 'All this work is wearing me out.', exampleCn: '所有这些工作让我筋疲力尽。' },
+          { id: 297, word: 'wipe out', phonetic: '/waɪp aʊt/', meaning: '消灭；擦除', example: 'The disease was almost wiped out.', exampleCn: '这种疾病几乎被消灭了。' },
+          { id: 298, word: 'write down', phonetic: '/raɪt daʊn/', meaning: '写下', example: 'Write down your goals for the year.', exampleCn: '写下你今年的目标。' },
+          { id: 299, word: 'yield to', phonetic: '/jiːld tuː/', meaning: '屈服于；让步', example: 'Don\'t yield to temptation.', exampleCn: '不要屈服于诱惑。' },
+          { id: 300, word: 'zoom in', phonetic: '/zuːm ɪn/', meaning: '放大', example: 'You can zoom in on the photo to see details.', exampleCn: '你可以放大照片查看细节。' }
+        ]
+      }
+    ]
+  },
+  advanced: {
+    name: '进阶词汇',
+    units: [
+      {
+        name: 'Unit 16 - 抽象名词',
+        words: [
+          { id: 301, word: 'abundance', phonetic: '/əˈbʌndəns/', meaning: '丰富；充裕', example: 'There is an abundance of natural resources.', exampleCn: '这里有丰富的自然资源。' },
+          { id: 302, word: 'accomplish', phonetic: '/əˈkɑːmplɪʃ/', meaning: '完成；实现', example: 'What did you accomplish today?', exampleCn: '你今天完成了什么？' },
+          { id: 303, word: 'acknowledge', phonetic: '/əkˈnɑːlɪdʒ/', meaning: '承认；确认', example: 'He acknowledged his mistake openly.', exampleCn: '他公开承认了自己的错误。' },
+          { id: 304, word: 'adequate', phonetic: '/ˈædɪkwət/', meaning: '足够的；适当的', example: 'The facilities are not adequate for our needs.', exampleCn: '设施不足以满足我们的需求。' },
+          { id: 305, word: 'advocate', phonetic: '/ˈædvəkeɪt/', meaning: '提倡；拥护者', example: 'She advocates for children\'s rights.', exampleCn: '她倡导儿童权利。' },
+          { id: 306, word: 'aggressive', phonetic: '/əˈɡresɪv/', meaning: '侵略的；好斗的', example: 'The company has an aggressive marketing strategy.', exampleCn: '该公司有一个激进的营销策略。' },
+          { id: 307, word: 'alternative', phonetic: '/ɔːlˈtɜːrnətɪv/', meaning: '替代的；替代方案', example: 'We need to find an alternative solution.', exampleCn: '我们需要找到一个替代方案。' },
+          { id: 308, word: 'anticipate', phonetic: '/ænˈtɪsɪpeɪt/', meaning: '预期；期望', example: 'We anticipate a large crowd at the concert.', exampleCn: '我们预期音乐会将有很多人。' },
+          { id: 309, word: 'apparent', phonetic: '/əˈpærənt/', meaning: '明显的', example: 'It became apparent that he was lying.', exampleCn: '很明显他在说谎。' },
+          { id: 310, word: 'appropriate', phonetic: '/əˈproʊpriət/', meaning: '适当的', example: 'Please wear appropriate clothing for the occasion.', exampleCn: '请穿着适合该场合的服装。' },
+          { id: 311, word: 'artificial', phonetic: '/ˌɑːrtɪˈfɪʃl/', meaning: '人造的；虚假的', example: 'Artificial intelligence is changing the world.', exampleCn: '人工智能正在改变世界。' },
+          { id: 312, word: 'assertive', phonetic: '/əˈsɜːrtɪv/', meaning: '自信的；果断的', example: 'You need to be more assertive in meetings.', exampleCn: '你在会议上需要更加果断。' },
+          { id: 313, word: 'awareness', phonetic: '/əˈwernəs/', meaning: '意识；认识', example: 'We need to raise awareness about environmental issues.', exampleCn: '我们需要提高对环境问题的认识。' },
+          { id: 314, word: 'bureaucracy', phonetic: '/bjʊˈrɑːkrəsi/', meaning: '官僚机构', example: 'The bureaucracy slows down the process.', exampleCn: '官僚机构拖慢了流程。' },
+          { id: 315, word: 'calculated', phonetic: '/ˈkælkjuleɪtɪd/', meaning: '精心计划的', example: 'It was a calculated risk.', exampleCn: '这是一个经过计算的风险。' },
+          { id: 316, word: 'collapse', phonetic: '/kəˈlæps/', meaning: '崩溃；倒塌', example: 'The building collapsed during the earthquake.', exampleCn: '建筑在地震中倒塌了。' },
+          { id: 317, word: 'comprehensive', phonetic: '/ˌkɑːmprɪˈhensɪv/', meaning: '全面的；综合的', example: 'We need a comprehensive plan.', exampleCn: '我们需要一个全面的计划。' },
+          { id: 318, word: 'compromise', phonetic: '/ˈkɑːmprəmaɪz/', meaning: '妥协；折中', example: 'A successful relationship requires compromise.', exampleCn: '成功的关系需要妥协。' },
+          { id: 319, word: 'conscious', phonetic: '/ˈkɑːnʃəs/', meaning: '有意识的；清醒的', example: 'She made a conscious decision to change her life.', exampleCn: '她有意识地做出了改变人生的决定。' },
+          { id: 320, word: 'controversy', phonetic: '/ˈkɑːntrəvɜːrsi/', meaning: '争议', example: 'The new law caused a lot of controversy.', exampleCn: '新法律引起了很多争议。' }
+        ]
+      },
+      {
+        name: 'Unit 17 - 学术词汇',
+        words: [
+          { id: 321, word: 'curriculum', phonetic: '/kəˈrɪkjələm/', meaning: '课程', example: 'The curriculum needs to be updated.', exampleCn: '课程需要更新。' },
+          { id: 322, word: 'dedicate', phonetic: '/ˈdedɪkeɪt/', meaning: '致力于；奉献', example: 'She dedicated her life to helping others.', exampleCn: '她毕生致力于帮助他人。' },
+          { id: 323, word: 'deficiency', phonetic: '/dɪˈfɪʃnsi/', meaning: '不足；缺陷', example: 'Iron deficiency can cause fatigue.', exampleCn: '缺铁会导致疲劳。' },
+          { id: 324, word: 'democracy', phonetic: '/dɪˈmɑːkrəsi/', meaning: '民主', example: 'Democracy is based on freedom and equality.', exampleCn: '民主基于自由和平等。' },
+          { id: 325, word: 'depression', phonetic: '/dɪˈpreʃn/', meaning: '抑郁；萧条', example: 'She has been suffering from depression.', exampleCn: '她一直患有抑郁症。' },
+          { id: 326, word: 'dilemma', phonetic: '/dɪˈlemə/', meaning: '困境', example: 'I am facing a moral dilemma.', exampleCn: '我面临着一个道德困境。' },
+          { id: 327, word: 'dimension', phonetic: '/daɪˈmenʃn/', meaning: '维度；方面', example: 'There is another dimension to this problem.', exampleCn: '这个问题还有另一个方面。' },
+          { id: 328, word: 'diplomatic', phonetic: '/ˌdɪpləˈmætɪk/', meaning: '外交的；圆滑的', example: 'A diplomatic solution is always preferred.', exampleCn: '外交解决方案总是更受欢迎。' },
+          { id: 329, word: 'discrimination', phonetic: '/dɪˌskrɪmɪˈneɪʃn/', meaning: '歧视；辨别', example: 'Racial discrimination is illegal.', exampleCn: '种族歧视是非法的。' },
+          { id: 330, word: 'dominant', phonetic: '/ˈdɑːmɪnənt/', meaning: '主导的；支配的', example: 'English is the dominant language in business.', exampleCn: '英语是商业中的主导语言。' },
+          { id: 331, word: 'elaborate', phonetic: '/ɪˈlæbərət/', meaning: '精心制作的；详细阐述', example: 'Could you elaborate on your plan?', exampleCn: '你能详细说明你的计划吗？' },
+          { id: 332, word: 'enforcement', phonetic: '/ɪnˈfɔːrsmənt/', meaning: '执行；实施', example: 'Law enforcement agencies are investigating.', exampleCn: '执法机构正在调查。' },
+          { id: 333, word: 'enthusiasm', phonetic: '/ɪnˈθuːziæzəm/', meaning: '热情', example: 'He showed great enthusiasm for the project.', exampleCn: '他对项目表现出了极大的热情。' },
+          { id: 334, word: 'equivalent', phonetic: '/ɪˈkwɪvələnt/', meaning: '等价的；等同物', example: 'One mile is equivalent to 1.6 kilometers.', exampleCn: '一英里等于1.6公里。' },
+          { id: 335, word: 'establish', phonetic: '/ɪˈstæblɪʃ/', meaning: '建立；确立', example: 'The company was established in 1990.', exampleCn: '公司成立于1990年。' },
+          { id: 336, word: 'ethical', phonetic: '/ˈeθɪkl/', meaning: '伦理的；道德的', example: 'Is it ethical to clone animals?', exampleCn: '克隆动物合乎伦理吗？' },
+          { id: 337, word: 'exaggerate', phonetic: '/ɪɡˈzædʒəreɪt/', meaning: '夸张', example: 'Don\'t exaggerate the problem.', exampleCn: '不要夸大问题。' },
+          { id: 338, word: 'exclusive', phonetic: '/ɪkˈskluːsɪv/', meaning: '独有的；排外的', example: 'This is an exclusive interview with the president.', exampleCn: '这是对总统的独家采访。' },
+          { id: 339, word: 'expertise', phonetic: '/ˌekspɜːrˈtiːz/', meaning: '专门知识；专长', example: 'We need someone with technical expertise.', exampleCn: '我们需要有技术专长的人。' },
+          { id: 340, word: 'facilitate', phonetic: '/fəˈsɪlɪteɪt/', meaning: '促进；便利', example: 'The new system facilitates communication.', exampleCn: '新系统促进了沟通。' }
+        ]
+      },
+      {
+        name: 'Unit 18 - 社会学术语',
+        words: [
+          { id: 341, word: 'fluctuate', phonetic: '/ˈflʌktʃueɪt/', meaning: '波动', example: 'Stock prices fluctuate daily.', exampleCn: '股票价格每天都在波动。' },
+          { id: 342, word: 'fundamental', phonetic: '/ˌfʌndəˈmentl/', meaning: '基本的；根本的', example: 'Freedom of speech is a fundamental right.', exampleCn: '言论自由是一项基本权利。' },
+          { id: 343, word: 'guideline', phonetic: '/ˈɡaɪdlaɪn/', meaning: '指导方针', example: 'Please follow the safety guidelines.', exampleCn: '请遵守安全准则。' },
+          { id: 344, word: 'hierarchy', phonetic: '/ˈhaɪərɑːrki/', meaning: '等级制度', example: 'The company has a strict hierarchy.', exampleCn: '公司有严格的等级制度。' },
+          { id: 345, word: 'hypothesis', phonetic: '/haɪˈpɑːθəsɪs/', meaning: '假设；假说', example: 'Scientists test their hypotheses through experiments.', exampleCn: '科学家通过实验验证假设。' },
+          { id: 346, word: 'ideology', phonetic: '/ˌaɪdiˈɑːlədʒi/', meaning: '意识形态', example: 'Political ideologies shape our world.', exampleCn: '政治意识形态塑造了我们的世界。' },
+          { id: 347, word: 'immigrant', phonetic: '/ˈɪmɪɡrənt/', meaning: '移民（移入）', example: 'Many immigrants came to America for a better life.', exampleCn: '许多移民来到美国追求更好的生活。' },
+          { id: 348, word: 'implement', phonetic: '/ˈɪmplɪment/', meaning: '实施；执行', example: 'The government implemented new tax policies.', exampleCn: '政府实施了新的税收政策。' },
+          { id: 349, word: 'incentive', phonetic: '/ɪnˈsentɪv/', meaning: '激励；动机', example: 'Tax incentives encourage investment.', exampleCn: '税收激励鼓励投资。' },
+          { id: 350, word: 'inevitable', phonetic: '/ɪnˈevɪtəbl/', meaning: '不可避免的', example: 'Change is inevitable in life.', exampleCn: '变化在生活中是不可避免的。' },
+          { id: 351, word: 'infrastructure', phonetic: '/ˈɪnfrəstrʌktʃər/', meaning: '基础设施', example: 'The country needs to improve its infrastructure.', exampleCn: '该国需要改善其基础设施。' },
+          { id: 352, word: 'initiative', phonetic: '/ɪˈnɪʃətɪv/', meaning: '主动性；倡议', example: 'She showed great initiative at work.', exampleCn: '她在工作中表现出很强的主动性。' },
+          { id: 353, word: 'integrate', phonetic: '/ˈɪntɪɡreɪt/', meaning: '整合；融入', example: 'We need to integrate new technology into our system.', exampleCn: '我们需要将新技术整合到我们的系统中。' },
+          { id: 354, word: 'interact', phonetic: '/ˌɪntərˈækt/', meaning: '互动；相互作用', example: 'Children learn by interacting with others.', exampleCn: '孩子们通过与他人互动来学习。' },
+          { id: 355, word: 'interfere', phonetic: '/ˌɪntərˈfɪr/', meaning: '干涉；干扰', example: 'Don\'t interfere in other people\'s business.', exampleCn: '不要干涉别人的事。' },
+          { id: 356, word: 'intermediate', phonetic: '/ˌɪntərˈmiːdiət/', meaning: '中间的；中级的', example: 'She is at an intermediate level in English.', exampleCn: '她的英语处于中级水平。' },
+          { id: 357, word: 'intervention', phonetic: '/ˌɪntərˈvenʃn/', meaning: '干预；介入', example: 'Military intervention should be the last resort.', exampleCn: '军事干预应作为最后手段。' },
+          { id: 358, word: 'investment', phonetic: '/ɪnˈvestmənt/', meaning: '投资', example: 'Education is an investment in your future.', exampleCn: '教育是对你未来的投资。' },
+          { id: 359, word: 'journalism', phonetic: '/ˈdʒɜːrnəlɪzəm/', meaning: '新闻业', example: 'Good journalism serves the public interest.', exampleCn: '好的新闻业服务于公众利益。' },
+          { id: 360, word: 'legislation', phonetic: '/ˌledʒɪsˈleɪʃn/', meaning: '立法；法律', example: 'New legislation will protect consumers.', exampleCn: '新的立法将保护消费者。' }
+        ]
+      },
+      {
+        name: 'Unit 19 - 继续学术词',
+        words: [
+          { id: 361, word: 'legitimate', phonetic: '/lɪˈdʒɪtɪmət/', meaning: '合法的；正当的', example: 'Is this a legitimate business?', exampleCn: '这是合法的生意吗？' },
+          { id: 362, word: 'liberal', phonetic: '/ˈlɪbərəl/', meaning: '自由的；开明的', example: 'She has a liberal attitude towards life.', exampleCn: '她对生活持开放态度。' },
+          { id: 363, word: 'literally', phonetic: '/ˈlɪtərəli/', meaning: '字面上；确实地', example: 'I was literally shaking with fear.', exampleCn: '我确实是在害怕得发抖。' },
+          { id: 364, word: 'magnificent', phonetic: '/mæɡˈnɪfɪsnt/', meaning: '壮丽的；宏伟的', example: 'The view from the top is magnificent.', exampleCn: '从顶部看到的景色非常壮丽。' },
+          { id: 365, word: 'manipulate', phonetic: '/məˈnɪpjuleɪt/', meaning: '操纵；操作', example: 'Don\'t try to manipulate the situation.', exampleCn: '不要试图操纵局面。' },
+          { id: 366, word: 'mechanism', phonetic: '/ˈmekənɪzəm/', meaning: '机制；原理', example: 'The body has a natural defense mechanism.', exampleCn: '身体有天然的防御机制。' },
+          { id: 367, word: 'monopoly', phonetic: '/məˈnɑːpəli/', meaning: '垄断', example: 'The company has a monopoly on the market.', exampleCn: '该公司垄断了市场。' },
+          { id: 368, word: 'morality', phonetic: '/məˈræləti/', meaning: '道德', example: 'The debate raises questions about morality.', exampleCn: '这场辩论引发了关于道德的问题。' },
+          { id: 369, word: 'narrative', phonetic: '/ˈnærətɪv/', meaning: '叙事；故事', example: 'She has a unique narrative style.', exampleCn: '她有一种独特的叙事风格。' },
+          { id: 370, word: 'neutral', phonetic: '/ˈnuːtrəl/', meaning: '中立的', example: 'Switzerland remained neutral during the war.', exampleCn: '瑞士在战争期间保持中立。' },
+          { id: 371, word: 'notion', phonetic: '/ˈnoʊʃn/', meaning: '概念；观念', example: 'I reject the notion that money brings happiness.', exampleCn: '我拒绝接受金钱带来幸福这种观念。' },
+          { id: 372, word: 'obligation', phonetic: '/ˌɑːblɪˈɡeɪʃn/', meaning: '义务；责任', example: 'You have an obligation to tell the truth.', exampleCn: '你有义务说实话。' },
+          { id: 373, word: 'optimistic', phonetic: '/ˌɑːptɪˈmɪstɪk/', meaning: '乐观的', example: 'She is optimistic about the future.', exampleCn: '她对未来很乐观。' },
+          { id: 374, word: 'paradox', phonetic: '/ˈpærədɑːks/', meaning: '悖论', example: 'It is a paradox that the more you learn, the less you feel you know.', exampleCn: '你学得越多越觉得自己无知，这是一个悖论。' },
+          { id: 375, word: 'patent', phonetic: '/ˈpætnt/', meaning: '专利', example: 'He applied for a patent for his invention.', exampleCn: '他为他的发明申请了专利。' },
+          { id: 376, word: 'patriotic', phonetic: '/ˌpeɪtriˈɑːtɪk/', meaning: '爱国的', example: 'They sang patriotic songs together.', exampleCn: '他们一起唱爱国歌曲。' },
+          { id: 377, word: 'perspective', phonetic: '/pərˈspektɪv/', meaning: '视角；观点', example: 'Try to see things from a different perspective.', exampleCn: '试着从不同的角度看问题。' },
+          { id: 378, word: 'philosophy', phonetic: '/fɪˈlɑːsəfi/', meaning: '哲学', example: 'My philosophy is to live in the present.', exampleCn: '我的人生哲学是活在当下。' },
+          { id: 379, word: 'platform', phonetic: '/ˈplætfɔːrm/', meaning: '平台', example: 'The company launched a new online platform.', exampleCn: '公司推出了一个新的在线平台。' },
+          { id: 380, word: 'preliminary', phonetic: '/prɪˈlɪmɪneri/', meaning: '初步的', example: 'The preliminary results look promising.', exampleCn: '初步结果看起来很有希望。' }
+        ]
+      },
+      {
+        name: 'Unit 20 - 高频抽象词',
+        words: [
+          { id: 381, word: 'premium', phonetic: '/ˈpriːmiəm/', meaning: '优质的；保险费', example: 'They charge a premium price for quality.', exampleCn: '他们为质量收取高价。' },
+          { id: 382, word: 'presumably', phonetic: '/prɪˈzuːməbli/', meaning: '大概；很可能', example: 'Presumably, he will arrive later.', exampleCn: '他大概会晚一点到。' },
+          { id: 383, word: 'prevail', phonetic: '/prɪˈveɪl/', meaning: '盛行；占优势', example: 'Justice will prevail in the end.', exampleCn: '正义终将获胜。' },
+          { id: 384, word: 'profound', phonetic: '/prəˈfaʊnd/', meaning: '深刻的；深远的', example: 'The experience had a profound effect on her.', exampleCn: '这次经历对她产生了深远的影响。' },
+          { id: 385, word: 'proportion', phonetic: '/prəˈpɔːrʃn/', meaning: '比例；部分', example: 'A large proportion of students go to college.', exampleCn: '大部分学生上了大学。' },
+          { id: 386, word: 'psychology', phonetic: '/saɪˈkɑːlədʒi/', meaning: '心理学', example: 'She studied psychology at university.', exampleCn: '她在大学学习了心理学。' },
+          { id: 387, word: 'rational', phonetic: '/ˈræʃnəl/', meaning: '理性的；合理的', example: 'Let\'s try to be rational about this.', exampleCn: '让我们对此保持理性。' },
+          { id: 388, word: 'realistic', phonetic: '/ˌriːəˈlɪstɪk/', meaning: '现实的', example: 'We need to set realistic goals.', exampleCn: '我们需要设定现实的目标。' },
+          { id: 389, word: 'regulate', phonetic: '/ˈreɡjuleɪt/', meaning: '调节；管理', example: 'The government needs to regulate the industry.', exampleCn: '政府需要监管这个行业。' },
+          { id: 390, word: 'reinforce', phonetic: '/ˌriːɪnˈfɔːrs/', meaning: '加强；强化', example: 'This evidence reinforces my argument.', exampleCn: '这个证据加强了我的论点。' },
+          { id: 391, word: 'reluctant', phonetic: '/rɪˈlʌktənt/', meaning: '不情愿的', example: 'She was reluctant to leave her hometown.', exampleCn: '她不愿离开家乡。' },
+          { id: 392, word: 'reputation', phonetic: '/ˌrepjuˈteɪʃn/', meaning: '声誉', example: 'The company has a good reputation.', exampleCn: '这家公司声誉很好。' },
+          { id: 393, word: 'resign', phonetic: '/rɪˈzaɪn/', meaning: '辞职；顺从', example: 'He decided to resign from his position.', exampleCn: '他决定辞职。' },
+          { id: 394, word: 'resistance', phonetic: '/rɪˈzɪstəns/', meaning: '抵抗；阻力', example: 'The plan faced strong resistance.', exampleCn: '该计划面临了强烈的阻力。' },
+          { id: 395, word: 'restrict', phonetic: '/rɪˈstrɪkt/', meaning: '限制；约束', example: 'The law restricts the sale of alcohol to minors.', exampleCn: '法律限制向未成年人出售酒精。' },
+          { id: 396, word: 'retain', phonetic: '/rɪˈteɪn/', meaning: '保持；保留', example: 'We need to retain our best employees.', exampleCn: '我们需要留住我们最好的员工。' },
+          { id: 397, word: 'revenue', phonetic: '/ˈrevənuː/', meaning: '收入；税收', example: 'The company\'s revenue increased by 20%.', exampleCn: '公司的收入增加了20%。' },
+          { id: 398, word: 'scheme', phonetic: '/skiːm/', meaning: '计划；方案', example: 'They came up with a clever scheme.', exampleCn: '他们想出了一个聪明的方案。' },
+          { id: 399, word: 'seminar', phonetic: '/ˈsemɪnɑːr/', meaning: '研讨会', example: 'I attended a seminar on leadership.', exampleCn: '我参加了一个关于领导力的研讨会。' },
+          { id: 400, word: 'simulate', phonetic: '/ˈsɪmjuleɪt/', meaning: '模拟', example: 'The program simulates real-life situations.', exampleCn: '该程序模拟真实生活场景。' }
+        ]
+      },
+      {
+        name: 'Unit 21 - 高频学术词',
+        words: [
+          { id: 401, word: 'skeptical', phonetic: '/ˈskeptɪkl/', meaning: '怀疑的', example: 'I am skeptical about his promises.', exampleCn: '我对他的承诺持怀疑态度。' },
+          { id: 402, word: 'sophisticated', phonetic: '/səˈfɪstɪkeɪtɪd/', meaning: '复杂的；精密的', example: 'This is a highly sophisticated system.', exampleCn: '这是一个高度复杂的系统。' },
+          { id: 403, word: 'speculate', phonetic: '/ˈspekjuleɪt/', meaning: '推测；投机', example: 'We can only speculate about the future.', exampleCn: '我们对未来只能推测。' },
+          { id: 404, word: 'statistics', phonetic: '/stəˈtɪstɪks/', meaning: '统计学；数据', example: 'Statistics show that crime is decreasing.', exampleCn: '统计数据显示犯罪正在减少。' },
+          { id: 405, word: 'stimulate', phonetic: '/ˈstɪmjuleɪt/', meaning: '刺激；激励', example: 'Music can stimulate the brain.', exampleCn: '音乐可以刺激大脑。' },
+          { id: 406, word: 'subordinate', phonetic: '/səˈbɔːrdɪnət/', meaning: '下属；从属的', example: 'He has good relationships with his subordinates.', exampleCn: '他与下属关系良好。' },
+          { id: 407, word: 'substantial', phonetic: '/səbˈstænʃl/', meaning: '大量的；实质的', example: 'She made a substantial contribution to the project.', exampleCn: '她对项目做出了重大贡献。' },
+          { id: 408, word: 'superficial', phonetic: '/ˌsuːpərˈfɪʃl/', meaning: '肤浅的；表面的', example: 'Don\'t judge by superficial appearances.', exampleCn: '不要以表面现象来判断。' },
+          { id: 409, word: 'sustainable', phonetic: '/səˈsteɪnəbl/', meaning: '可持续的', example: 'We need to find sustainable energy sources.', exampleCn: '我们需要找到可持续的能源。' },
+          { id: 410, word: 'symptom', phonetic: '/ˈsɪmptəm/', meaning: '症状；征兆', example: 'Fever is a symptom of infection.', exampleCn: '发烧是感染的症状。' },
+          { id: 411, word: 'synthesis', phonetic: '/ˈsɪnθəsɪs/', meaning: '综合；合成', example: 'The report is a synthesis of various studies.', exampleCn: '这份报告是各种研究的综合。' },
+          { id: 412, word: 'temporary', phonetic: '/ˈtempəreri/', meaning: '临时的；暂时的', example: 'This is just a temporary solution.', exampleCn: '这只是一个临时的解决方案。' },
+          { id: 413, word: 'terminal', phonetic: '/ˈtɜːrmɪnl/', meaning: '终点的；终端', example: 'The bus goes to the terminal station.', exampleCn: '公交车开往终点站。' },
+          { id: 414, word: 'territory', phonetic: '/ˈterətɔːri/', meaning: '领土；领域', example: 'The company is expanding into new territory.', exampleCn: '公司正在向新领域扩展。' },
+          { id: 415, word: 'tolerance', phonetic: '/ˈtɑːlərəns/', meaning: '容忍；宽容', example: 'We need more tolerance in our society.', exampleCn: '我们的社会需要更多的宽容。' },
+          { id: 416, word: 'transition', phonetic: '/trænˈzɪʃn/', meaning: '过渡；转变', example: 'The country is in transition to democracy.', exampleCn: '该国正在向民主过渡。' },
+          { id: 417, word: 'transparent', phonetic: '/trænsˈpærənt/', meaning: '透明的', example: 'The government promised to be more transparent.', exampleCn: '政府承诺更加透明。' },
+          { id: 418, word: 'tremendous', phonetic: '/trəˈmendəs/', meaning: '巨大的；极好的', example: 'She has made tremendous progress.', exampleCn: '她取得了巨大的进步。' },
+          { id: 419, word: 'undermine', phonetic: '/ˌʌndərˈmaɪn/', meaning: '削弱；破坏', example: 'Constant criticism can undermine confidence.', exampleCn: '不断的批评会削弱信心。' },
+          { id: 420, word: 'unprecedented', phonetic: '/ʌnˈpresɪdentɪd/', meaning: '前所未有的', example: 'The pandemic caused unprecedented disruption.', exampleCn: '疫情造成了前所未有的破坏。' }
+        ]
+      },
+      {
+        name: 'Unit 22 - 综合进阶',
+        words: [
+          { id: 421, word: 'urbanization', phonetic: '/ˌɜːrbənəˈzeɪʃn/', meaning: '城市化', example: 'Urbanization is happening at a rapid pace.', exampleCn: '城市化正在快速推进。' },
+          { id: 422, word: 'verify', phonetic: '/ˈverɪfaɪ/', meaning: '验证；核实', example: 'We need to verify the information first.', exampleCn: '我们需要先核实信息。' },
+          { id: 423, word: 'vicious', phonetic: '/ˈvɪʃəs/', meaning: '恶性的；凶猛的', example: 'It is a vicious cycle of poverty.', exampleCn: '这是一种贫困的恶性循环。' },
+          { id: 424, word: 'violate', phonetic: '/ˈvaɪəleɪt/', meaning: '违反；侵犯', example: 'He was fined for violating traffic rules.', exampleCn: '他因违反交通规则而被罚款。' },
+          { id: 425, word: 'virtual', phonetic: '/ˈvɜːrtʃuəl/', meaning: '虚拟的；实际上', example: 'Virtual reality is becoming popular.', exampleCn: '虚拟现实正变得越来越流行。' },
+          { id: 426, word: 'vulnerable', phonetic: '/ˈvʌlnərəbl/', meaning: '脆弱的；易受伤害的', example: 'Children are the most vulnerable group.', exampleCn: '儿童是最脆弱的群体。' },
+          { id: 427, word: 'withdraw', phonetic: '/wɪðˈdrɔː/', meaning: '撤回；退出', example: 'He decided to withdraw from the competition.', exampleCn: '他决定退出比赛。' },
+          { id: 428, word: 'worthwhile', phonetic: '/ˌwɜːrθˈwaɪl/', meaning: '值得的', example: 'Teaching is a very worthwhile career.', exampleCn: '教书是一份非常值得的职业。' },
+          { id: 429, word: 'accommodate', phonetic: '/əˈkɑːmədeɪt/', meaning: '容纳；适应', example: 'The hotel can accommodate 500 guests.', exampleCn: '这家酒店可容纳500位客人。' },
+          { id: 430, word: 'accumulate', phonetic: '/əˈkjuːmjəleɪt/', meaning: '积累', example: 'He has accumulated a lot of wealth over the years.', exampleCn: '他多年来积累了大量财富。' },
+          { id: 431, word: 'adolescent', phonetic: '/ˌædəˈlesnt/', meaning: '青少年', example: 'Adolescent behavior can be challenging.', exampleCn: '青少年的行为可能具有挑战性。' },
+          { id: 432, word: 'aggravate', phonetic: '/ˈæɡrəveɪt/', meaning: '加重；恶化', example: 'Smoking aggravates respiratory problems.', exampleCn: '吸烟会加重呼吸系统问题。' },
+          { id: 433, word: 'alleviate', phonetic: '/əˈliːvieɪt/', meaning: '减轻；缓解', example: 'This medicine can alleviate the pain.', exampleCn: '这种药可以缓解疼痛。' },
+          { id: 434, word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaning: '模棱两可的', example: 'His answer was deliberately ambiguous.', exampleCn: '他的回答故意模棱两可。' },
+          { id: 435, word: 'anonymous', phonetic: '/əˈnɑːnɪməs/', meaning: '匿名的', example: 'The letter was sent by an anonymous sender.', exampleCn: '这封信是一个匿名发送者寄来的。' },
+          { id: 436, word: 'appreciate', phonetic: '/əˈpriːʃieɪt/', meaning: '欣赏；感激', example: 'I really appreciate your help.', exampleCn: '我真的很感激你的帮助。' },
+          { id: 437, word: 'associated', phonetic: '/əˈsoʊʃieɪtɪd/', meaning: '相关的；关联的', example: 'Smoking is associated with lung cancer.', exampleCn: '吸烟与肺癌有关。' },
+          { id: 438, word: 'authentic', phonetic: '/ɔːˈθentɪk/', meaning: '真实的；可靠的', example: 'This is an authentic Chinese recipe.', exampleCn: '这是一道正宗的中国菜谱。' },
+          { id: 439, word: 'breakthrough', phonetic: '/ˈbreɪkθruː/', meaning: '突破', example: 'Scientists made a major breakthrough.', exampleCn: '科学家取得了重大突破。' },
+          { id: 440, word: 'candidate', phonetic: '/ˈkændɪdət/', meaning: '候选人；考生', example: 'He is a strong candidate for the job.', exampleCn: '他是这份工作的有力候选人。' }
+        ]
+      },
+      {
+        name: 'Unit 23 - 必备词汇',
+        words: [
+          { id: 441, word: 'chronic', phonetic: '/ˈkrɑːnɪk/', meaning: '慢性的；长期的', example: 'She suffers from chronic back pain.', exampleCn: '她患有慢性背痛。' },
+          { id: 442, word: 'cognitive', phonetic: '/ˈkɑːɡnətɪv/', meaning: '认知的', example: 'Reading improves cognitive function.', exampleCn: '阅读改善认知功能。' },
+          { id: 443, word: 'commodity', phonetic: '/kəˈmɑːdəti/', meaning: '商品', example: 'Oil is a valuable commodity.', exampleCn: '石油是一种有价值的商品。' },
+          { id: 444, word: 'comparable', phonetic: '/ˈkɑːmpərəbl/', meaning: '可比较的；类似的', example: 'The two products are of comparable quality.', exampleCn: '这两种产品的质量相当。' },
+          { id: 445, word: 'compensate', phonetic: '/ˈkɑːmpenseɪt/', meaning: '补偿；赔偿', example: 'The company compensated him for the injury.', exampleCn: '公司为他的受伤进行了赔偿。' },
+          { id: 446, word: 'competence', phonetic: '/ˈkɑːmpɪtəns/', meaning: '能力；胜任', example: 'She has proven her competence in the role.', exampleCn: '她已证明自己在这个岗位上的能力。' },
+          { id: 447, word: 'complement', phonetic: '/ˈkɑːmplɪment/', meaning: '补充；互补', example: 'The wine complements the food perfectly.', exampleCn: '这款酒完美地搭配了食物。' },
+          { id: 448, word: 'conceive', phonetic: '/kənˈsiːv/', meaning: '构想；想象', example: 'I cannot conceive of life without music.', exampleCn: '我无法想象没有音乐的生活。' },
+          { id: 449, word: 'consensus', phonetic: '/kənˈsensəs/', meaning: '共识', example: 'We reached a consensus on the issue.', exampleCn: '我们在这个问题上达成了共识。' },
+          { id: 450, word: 'consistent', phonetic: '/kənˈsɪstənt/', meaning: '一致的；持续的', example: 'She has been consistent in her performance.', exampleCn: '她的表现一直很稳定。' },
+          { id: 451, word: 'contradict', phonetic: '/ˌkɑːntrəˈdɪkt/', meaning: '矛盾；反驳', example: 'His actions contradict his words.', exampleCn: '他的行为与他的言论相矛盾。' },
+          { id: 452, word: 'conventional', phonetic: '/kənˈvenʃənl/', meaning: '传统的；常规的', example: 'She challenges conventional thinking.', exampleCn: '她挑战传统思维。' },
+          { id: 453, word: 'coordinate', phonetic: '/koʊˈɔːrdɪneɪt/', meaning: '协调', example: 'We need to coordinate our efforts.', exampleCn: '我们需要协调我们的努力。' },
+          { id: 454, word: 'corporate', phonetic: '/ˈkɔːrpərət/', meaning: '公司的；法人的', example: 'She works in the corporate sector.', exampleCn: '她在企业部门工作。' },
+          { id: 455, word: 'crucial', phonetic: '/ˈkruːʃl/', meaning: '关键的；重要的', example: 'This decision is crucial to our success.', exampleCn: '这个决定对我们的成功至关重要。' },
+          { id: 456, word: 'demonstrate', phonetic: '/ˈdemənstreɪt/', meaning: '展示；证明', example: 'The study demonstrates the link between diet and health.', exampleCn: '该研究证明了饮食与健康之间的联系。' },
+          { id: 457, word: 'deteriorate', phonetic: '/dɪˈtɪriəreɪt/', meaning: '恶化', example: 'His health began to deteriorate.', exampleCn: '他的健康开始恶化。' },
+          { id: 458, word: 'devastate', phonetic: '/ˈdevəsteɪt/', meaning: '摧毁；使震惊', example: 'The earthquake devastated the city.', exampleCn: '地震摧毁了这座城市。' },
+          { id: 459, word: 'diagnose', phonetic: '/ˌdaɪəɡˈnoʊs/', meaning: '诊断', example: 'The doctor diagnosed him with flu.', exampleCn: '医生诊断他得了流感。' },
+          { id: 460, word: 'displace', phonetic: '/dɪsˈpleɪs/', meaning: '取代；使流离失所', example: 'Thousands were displaced by the flood.', exampleCn: '数千人因洪水而流离失所。' }
+        ]
+      },
+      {
+        name: 'Unit 24 - 最后一批',
+        words: [
+          { id: 461, word: 'dispose', phonetic: '/dɪˈspoʊz/', meaning: '处理；处置', example: 'Please dispose of waste properly.', exampleCn: '请妥善处理垃圾。' },
+          { id: 462, word: 'diverse', phonetic: '/daɪˈvɜːrs/', meaning: '多样的', example: 'Our team is culturally diverse.', exampleCn: '我们的团队文化多元。' },
+          { id: 463, word: 'domestic', phonetic: '/dəˈmestɪk/', meaning: '国内的；家庭的', example: 'The domestic economy is growing.', exampleCn: '国内经济正在增长。' },
+          { id: 464, word: 'drastic', phonetic: '/ˈdræstɪk/', meaning: '激烈的； drastic', example: 'We need to take drastic action.', exampleCn: '我们需要采取激烈的行动。' },
+          { id: 465, word: 'dynamic', phonetic: '/daɪˈnæmɪk/', meaning: '动态的；充满活力的', example: 'She is a dynamic young leader.', exampleCn: '她是一位充满活力的年轻领导者。' },
+          { id: 466, word: 'elaborate', phonetic: '/ɪˈlæbərət/', meaning: '精心制作的；详细阐述', example: 'The plan is very elaborate and detailed.', exampleCn: '这个计划非常详尽周密。' },
+          { id: 467, word: 'elementary', phonetic: '/ˌelɪˈmentri/', meaning: '基础的；初级的', example: 'This is an elementary mistake.', exampleCn: '这是一个基本的错误。' },
+          { id: 468, word: 'embrace', phonetic: '/ɪmˈbreɪs/', meaning: '拥抱；接受', example: 'We should embrace change, not fear it.', exampleCn: '我们应该拥抱变化，而不是害怕它。' },
+          { id: 469, word: 'endure', phonetic: '/ɪnˈdʊr/', meaning: '忍受；持续', example: 'Their friendship has endured for decades.', exampleCn: '他们的友谊持续了几十年。' },
+          { id: 470, word: 'enhance', phonetic: '/ɪnˈhæns/', meaning: '增强；提高', example: 'Technology can enhance learning.', exampleCn: '技术可以增强学习。' },
+          { id: 471, word: 'enormous', phonetic: '/ɪˈnɔːrməs/', meaning: '巨大的', example: 'The project cost an enormous amount of money.', exampleCn: '这个项目花费了巨额资金。' },
+          { id: 472, word: 'entrepreneur', phonetic: '/ˌɑːntrəprəˈnɜːr/', meaning: '企业家', example: 'She is a successful entrepreneur.', exampleCn: '她是一位成功的企业家。' },
+          { id: 473, word: 'evolution', phonetic: '/ˌevəˈluːʃn/', meaning: '进化；演变', example: 'The evolution of technology is amazing.', exampleCn: '科技的演变令人惊叹。' },
+          { id: 474, word: 'exceed', phonetic: '/ɪkˈsiːd/', meaning: '超过；超越', example: 'The results exceeded our expectations.', exampleCn: '结果超出了我们的预期。' },
+          { id: 475, word: 'exhibit', phonetic: '/ɪɡˈzɪbɪt/', meaning: '展示；展览', example: 'The museum exhibits ancient artifacts.', exampleCn: '博物馆展出古代文物。' },
+          { id: 476, word: 'exploit', phonetic: '/ɪkˈsplɔɪt/', meaning: '开发；剥削', example: 'We should exploit solar energy.', exampleCn: '我们应该开发利用太阳能。' },
+          { id: 477, word: 'external', phonetic: '/ɪkˈstɜːrnl/', meaning: '外部的', example: 'External factors influenced the decision.', exampleCn: '外部因素影响了这个决定。' },
+          { id: 478, word: 'fatal', phonetic: '/ˈfeɪtl/', meaning: '致命的', example: 'The accident was fatal for the driver.', exampleCn: '这次事故对司机来说是致命的。' },
+          { id: 479, word: 'feasible', phonetic: '/ˈfiːzəbl/', meaning: '可行的', example: 'Is this plan financially feasible?', exampleCn: '这个计划在财务上可行吗？' },
+          { id: 480, word: 'fluctuate', phonetic: '/ˈflʌktʃueɪt/', meaning: '波动；起伏', example: 'The temperature fluctuates greatly here.', exampleCn: '这里的气温波动很大。' }
+        ]
+      }
+    ]
+  }
+};
+
+// 获取所有单词的扁平数组（附带分类信息）
+function getAllWords(category) {
+  const words = [];
+  if (category) {
+    const cat = wordDatabase[category];
+    if (cat) {
+      cat.units.forEach(unit => {
+        unit.words.forEach(w => words.push({ ...w, category }));
+      });
+    }
+  } else {
+    Object.entries(wordDatabase).forEach(([catKey, cat]) => {
+      cat.units.forEach(unit => {
+        unit.words.forEach(w => words.push({ ...w, category: catKey }));
+      });
+    });
+  }
+  return words;
+}
+
+// 获取指定分类的总单词数
+function getWordCount(category) {
+  return getAllWords(category).length;
+}
