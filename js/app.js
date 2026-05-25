@@ -29,6 +29,7 @@ const App = {
       this.showAudioLock();
     } else {
       // 返回用户：恢复解锁状态
+      document.getElementById('audioLockOverlay').style.display = 'none';
       TTS.unlocked = true;
       TTS.init();
       this.bindEvents();
@@ -43,13 +44,12 @@ const App = {
     overlay.style.display = 'flex';
 
     var handler = function () {
-      // 在用户点击事件同步流中解锁
-      TTS.unlock();
       localStorage.setItem('vocab_audio_unlocked', '1');
       overlay.style.display = 'none';
+      overlay.removeEventListener('click', handler);
+      try { TTS.unlock(); } catch (e) {}
       self.bindEvents();
       self.navigate('home');
-      overlay.removeEventListener('click', handler);
     };
 
     overlay.addEventListener('click', handler);
@@ -628,4 +628,8 @@ const App = {
 };
 
 // 启动应用
-document.addEventListener('DOMContentLoaded', () => App.init());
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function () { App.init(); });
+} else {
+  App.init();
+}
