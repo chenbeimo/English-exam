@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
-  <title>专升本英语单词背诵</title>
+  <title>无道词典</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -57,9 +57,14 @@
             <span class="stat-label">全网访客</span>
           </div>
         </div>
-        <div class="category-switch">
-          <button class="cat-btn active" data-cat="core">核心高频词</button>
-          <button class="cat-btn" data-cat="advanced">进阶词汇</button>
+        <div class="level-switch">
+          <button class="level-btn" data-level="college">专升本</button>
+          <button class="level-btn" data-level="primary">小学</button>
+          <button class="level-btn" data-level="junior">初中</button>
+          <button class="level-btn" data-level="senior">高中</button>
+        </div>
+        <div class="grade-switch" id="gradeSwitch">
+          <!-- 动态生成 -->
         </div>
         <div class="home-actions">
           <button class="action-btn primary" data-nav="learn">开始学习</button>

@@ -227,25 +227,49 @@ body {
   color: var(--text-light);
 }
 
-.category-switch {
+.level-switch {
   display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-.cat-btn {
+.level-btn {
   flex: 1;
-  padding: 10px;
+  padding: 9px 4px;
   border: 2px solid var(--border);
   background: var(--card-bg);
   border-radius: var(--radius);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.cat-btn.active {
+.level-btn.active {
+  border-color: var(--primary);
+  background: #EBF3FC;
+  color: var(--primary);
+}
+
+.grade-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.grade-btn {
+  padding: 8px 14px;
+  border: 2px solid var(--border);
+  background: var(--card-bg);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.grade-btn.active {
   border-color: var(--primary);
   background: #EBF3FC;
   color: var(--primary);

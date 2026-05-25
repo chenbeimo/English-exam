@@ -3,7 +3,8 @@ const App = {
   // ===== 状态 =====
   state: {
     mode: 'home',
-    category: 'core',
+    level: 'college',
+    grade: 'core',
     currentIndex: 0,
     dailyWords: [],
     quizWords: [],
@@ -19,7 +20,8 @@ const App = {
   // ===== 初始化 =====
   init() {
     const settings = Storage.getSettings();
-    this.state.category = settings.category || 'core';
+    this.state.level = settings.level || 'college';
+    this.state.grade = settings.grade || 'core';
 
     // ===== 修改位置：检查音频解锁状态 =====
     var audioUnlocked = localStorage.getItem('vocab_audio_unlocked') === '1';
@@ -75,21 +77,30 @@ const App = {
       });
     });
 
-    // 首页分类切换
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    // 首页学段切换
+    var self = this;
+    document.querySelectorAll('.level-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.level-btn').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        this.state.category = btn.dataset.cat;
-        Storage.saveSettings({ category: this.state.category });
-        this.renderHome();
+        self.setLevel(btn.dataset.level);
       });
+    });
+    // 年级/分类切换（委托）
+    document.getElementById('gradeSwitch').addEventListener('click', function (e) {
+      var btn = e.target.closest('.grade-btn');
+      if (!btn) return;
+      document.querySelectorAll('.grade-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      self.state.grade = btn.dataset.grade;
+      Storage.saveSettings({ level: self.state.level, grade: self.state.grade });
+      self.renderHome();
     });
 
     // 首页快捷入口（不含底部导航按钮）
     document.querySelectorAll('#mainContent [data-nav], .home-actions [data-nav]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        if (e.target.closest('.cat-btn')) return;
+        if (e.target.closest('.level-btn, .grade-btn')) return;
         const nav = btn.dataset.nav;
         if (nav === 'review') this.navigate('review');
         else if (nav === 'wordbook') this.navigate('wordbook');
@@ -166,10 +177,10 @@ const App = {
     });
     // 更新标题
     const titles = {
-      home: '单词背诵', learn: '学习模式', quiz: '测验模式',
+      home: '无道词典', learn: '学习模式', quiz: '测验模式',
       review: '错题复习', wordbook: '单词本', spell: '拼写模式'
     };
-    document.getElementById('pageTitle').textContent = titles[mode] || '单词背诵';
+    document.getElementById('pageTitle').textContent = titles[mode] || '无道词典';
     // 渲染对应视图
     switch (mode) {
       case 'home': this.renderHome(); break;
@@ -201,13 +212,50 @@ const App = {
     circle.style.strokeDasharray = circumference;
     circle.style.strokeDashoffset = circumference * (1 - ratio);
 
-    // 更新分类按钮
-    document.querySelectorAll('.cat-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.cat === this.state.category);
-    });
+    // 更新学段按钮
+    document.querySelectorAll('.level-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.level === this.state.level);
+    }.bind(this));
+    // 渲染年级/分类按钮
+    this.renderGradeSwitch();
 
     // 自动打卡
     Storage.checkin();
+  },
+
+  // ===== 学段/年级切换 =====
+  setLevel: function (level) {
+    this.state.level = level;
+    // 默认年级
+    var defaults = { college: 'core', primary: 'grade1', junior: 'grade7', senior: 'grade10' };
+    this.state.grade = defaults[level] || 'core';
+    Storage.saveSettings({ level: this.state.level, grade: this.state.grade });
+    this.renderHome();
+  },
+
+  renderGradeSwitch: function () {
+    var container = document.getElementById('gradeSwitch');
+    var level = this.state.level;
+    var html = '';
+    if (level === 'college') {
+      html = '<button class="grade-btn" data-grade="core">核心高频词</button>'
+        + '<button class="grade-btn" data-grade="advanced">进阶词汇</button>';
+    } else {
+      var levelData = wordDB[level];
+      if (levelData && levelData.grades) {
+        var grades = levelData.grades;
+        for (var gk in grades) {
+          var gname = grades[gk].name;
+          html += '<button class="grade-btn" data-grade="' + gk + '">' + gname + '</button>';
+        }
+      }
+    }
+    container.innerHTML = html;
+    // 高亮当前年级
+    var self = this;
+    container.querySelectorAll('.grade-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.grade === self.state.grade);
+    });
   },
 
   // ===== 学习模式 =====
@@ -218,7 +266,7 @@ const App = {
       this.renderLearnCard();
       return;
     }
-    const all = getAllWords(this.state.category);
+    const all = getAllWords(this.state.level, this.state.grade);
     if (all.length === 0) {
       this.showToast('词库为空');
       return;
@@ -288,7 +336,7 @@ const App = {
 
   // ===== 测验模式 =====
   startQuiz() {
-    const all = getAllWords(this.state.category);
+    const all = getAllWords(this.state.level, this.state.grade);
     if (all.length < 4) {
       this.showToast('词库单词不足，至少需要4个');
       return;
@@ -315,7 +363,7 @@ const App = {
       `正确: ${this.state.quizCorrect}`;
     document.getElementById('quizFeedback').style.display = 'none';
 
-    const pool = getAllWords(this.state.category);
+    const pool = getAllWords(this.state.level, this.state.grade);
     const options = Quiz.generateOptions(word, pool, 4);
     const container = document.getElementById('quizOptions');
     container.innerHTML = '';
@@ -470,7 +518,7 @@ const App = {
 
   // ===== 拼写模式 =====
   startSpell() {
-    const all = getAllWords(this.state.category);
+    const all = getAllWords(this.state.level, this.state.grade);
     if (all.length === 0) {
       this.showToast('词库为空');
       return;
