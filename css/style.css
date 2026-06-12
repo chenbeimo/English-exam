@@ -72,9 +72,52 @@
   --text-light: #7F8C8D;
   --border: #E0E6ED;
   --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --primary-bg: #EBF3FC;
+  --success-bg: #E8F8F0;
+  --danger-bg: #FDEDEC;
+  --active-bg: #dde4ef;
   --radius: 12px;
   --nav-height: 64px;
   --header-height: 52px;
+}
+
+/* ===== 深色模式 ===== */
+[data-theme="dark"] {
+  --primary: #5BA0E9;
+  --primary-dark: #4A90D9;
+  --success: #2ECC71;
+  --danger: #E74C3C;
+  --warning: #F39C12;
+  --bg: #0f0f1a;
+  --card-bg: #1a1a2e;
+  --text: #e0e0e0;
+  --text-light: #8888a0;
+  --border: #2a2a4a;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --primary-bg: rgba(74, 144, 217, 0.15);
+  --success-bg: rgba(39, 174, 96, 0.15);
+  --danger-bg: rgba(231, 76, 60, 0.15);
+  --active-bg: rgba(74, 144, 217, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --primary: #5BA0E9;
+    --primary-dark: #4A90D9;
+    --success: #2ECC71;
+    --danger: #E74C3C;
+    --warning: #F39C12;
+    --bg: #0f0f1a;
+    --card-bg: #1a1a2e;
+    --text: #e0e0e0;
+    --text-light: #8888a0;
+    --border: #2a2a4a;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    --primary-bg: rgba(74, 144, 217, 0.15);
+    --success-bg: rgba(39, 174, 96, 0.15);
+    --danger-bg: rgba(231, 76, 60, 0.15);
+    --active-bg: rgba(74, 144, 217, 0.25);
+  }
 }
 
 body {
@@ -143,12 +186,17 @@ body {
 }
 
 .view {
-  animation: fadeIn 0.25s ease;
+  animation: viewIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes viewIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ===== 首页 ===== */
@@ -247,7 +295,7 @@ body {
 
 .level-btn.active {
   border-color: var(--primary);
-  background: #EBF3FC;
+  background: var(--primary-bg);
   color: var(--primary);
 }
 
@@ -271,7 +319,7 @@ body {
 
 .grade-btn.active {
   border-color: var(--primary);
-  background: #EBF3FC;
+  background: var(--primary-bg);
   color: var(--primary);
 }
 
@@ -357,14 +405,89 @@ body {
   perspective: 800px;
   margin-bottom: 16px;
   cursor: pointer;
+  touch-action: pan-y;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 滑动中：禁用过渡，跟随手指 */
+.card-container.swiping .card-inner {
+  transition: none;
+}
+
+/* 滑动指示器 */
+.card-container::before,
+.card-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.card-container::before {
+  content: '✗';
+  left: 8px;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.card-container::after {
+  content: '✓';
+  right: 8px;
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.card-container.swipe-left::before,
+.card-container.swipe-right::after {
+  opacity: 1;
+}
+
+/* 卡片飞出动画 */
+@keyframes flyRight {
+  to { transform: translateX(120%) rotate(15deg); opacity: 0; }
+}
+
+@keyframes flyLeft {
+  to { transform: translateX(-120%) rotate(-15deg); opacity: 0; }
+}
+
+.card-container.fly-right .card-inner {
+  animation: flyRight 0.35s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.card-container.fly-left .card-inner {
+  animation: flyLeft 0.35s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* 新卡片弹入动画 */
+@keyframes cardEnter {
+  from { transform: translateY(30px) scale(0.95); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.card-container.enter .card-inner {
+  animation: cardEnter 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
 .card-inner {
   position: relative;
   width: 100%;
   min-height: 240px;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .card-container.flipped .card-inner {
@@ -478,7 +601,7 @@ body {
 
 .speak-btn:active {
   transform: scale(0.88);
-  background: #dde4ef;
+  background: var(--active-bg);
 }
 
 .speak-btn.with-label {
@@ -488,7 +611,7 @@ body {
   padding: 10px 16px;
   gap: 6px;
   font-size: 20px;
-  background: #EBF3FC;
+  background: var(--primary-bg);
   color: var(--primary);
 }
 
@@ -504,10 +627,9 @@ body {
   padding: 16px 36px;
   border-radius: 30px;
   font-size: 20px;
-  background: #EBF3FC;
+  background: var(--primary-bg);
   color: var(--primary);
 }
-
 /* ===== 测验模式 ===== */
 .quiz-header {
   display: flex;
@@ -556,13 +678,13 @@ body {
 
 .quiz-option.correct {
   border-color: var(--success);
-  background: #E8F8F0;
+  background: var(--success-bg);
   color: var(--success);
 }
 
 .quiz-option.wrong {
   border-color: var(--danger);
-  background: #FDEDEC;
+  background: var(--danger-bg);
   color: var(--danger);
 }
 
@@ -576,12 +698,12 @@ body {
 }
 
 .quiz-feedback.correct {
-  background: #E8F8F0;
+  background: var(--success-bg);
   color: var(--success);
 }
 
 .quiz-feedback.wrong {
-  background: #FDEDEC;
+  background: var(--danger-bg);
   color: var(--danger);
 }
 
@@ -683,6 +805,8 @@ body {
   outline: none;
   transition: border-color 0.2s;
   letter-spacing: 2px;
+  background: var(--card-bg);
+  color: var(--text);
 }
 
 .spell-input:focus {
@@ -699,12 +823,12 @@ body {
 }
 
 .spell-feedback.correct {
-  background: #E8F8F0;
+  background: var(--success-bg);
   color: var(--success);
 }
 
 .spell-feedback.wrong {
-  background: #FDEDEC;
+  background: var(--danger-bg);
   color: var(--danger);
 }
 
@@ -736,16 +860,22 @@ body {
   cursor: pointer;
   padding: 6px 10px;
   color: var(--text-light);
-  transition: color 0.15s;
+  transition: color 0.2s, transform 0.15s;
   font-size: 11px;
 }
 
 .nav-btn.active {
   color: var(--primary);
+  transform: scale(1.05);
 }
 
 .nav-icon {
   font-size: 22px;
+  transition: transform 0.2s;
+}
+
+.nav-btn.active .nav-icon {
+  transform: scale(1.1);
 }
 
 /* ===== 设置弹窗 ===== */
@@ -789,11 +919,35 @@ body {
   border-radius: 6px;
   text-align: center;
   font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .setting-item input[type="range"] {
   flex: 1;
   margin: 0 10px;
+}
+
+.theme-switch {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-opt {
+  padding: 6px 12px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  border-radius: 16px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: all 0.2s;
+}
+
+.theme-opt.active {
+  border-color: var(--primary);
+  background: var(--primary-bg);
+  color: var(--primary);
 }
 
 .modal-btns {

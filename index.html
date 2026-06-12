@@ -5,7 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
   <title>无道词典</title>
+  <meta name="theme-color" content="#4A90D9">
+  <script>
+    (function () {
+      var t = localStorage.getItem('vocab_theme') || 'auto';
+      if (t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme:dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else if (t === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
   <!-- ====== 修改位置：音频解锁全屏遮罩 ====== -->
@@ -196,6 +210,14 @@
           <input type="range" id="settingRate" min="0.6" max="1.2" step="0.1">
           <span id="settingRateVal">0.9</span>
         </div>
+        <div class="setting-item">
+          <label>主题</label>
+          <div class="theme-switch" id="themeSwitch">
+            <button class="theme-opt" data-theme="auto">自动</button>
+            <button class="theme-opt" data-theme="light">浅色</button>
+            <button class="theme-opt" data-theme="dark">深色</button>
+          </div>
+        </div>
         <div class="modal-btns">
           <button class="action-btn" id="btnResetData">重置进度</button>
           <button class="action-btn primary" id="btnCloseSettings">关闭</button>
@@ -208,10 +230,15 @@
   </div>
 
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script src="js/wordData.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/tts.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/app.js"></script>
+  <script defer src="js/wordData.js"></script>
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/tts.js"></script>
+  <script defer src="js/quiz.js"></script>
+  <script defer src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    }
+  </script>
 </body>
 </html>

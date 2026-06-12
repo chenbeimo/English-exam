@@ -110,7 +110,7 @@ const Storage = {
 
   // ===== 用户设置 =====
   getSettings() {
-    const defaults = { dailyGoal: 50, speechRate: 0.9 };
+    const defaults = { dailyGoal: 50, speechRate: 0.9, theme: 'auto' };
     const data = JSON.parse(localStorage.getItem('vocab_settings') || '{}');
     return Object.assign(defaults, data);
   },

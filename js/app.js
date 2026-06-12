@@ -22,6 +22,10 @@ const App = {
     const settings = Storage.getSettings();
     this.state.level = settings.level || 'college';
     this.state.grade = settings.grade || 'core';
+    this.applyTheme(settings.theme || 'auto');
+
+    // 预加载当前学段词库
+    loadLevelData(this.state.level).catch(function () {});
 
     // ===== 修改位置：检查音频解锁状态 =====
     var audioUnlocked = localStorage.getItem('vocab_audio_unlocked') === '1';
@@ -115,11 +119,14 @@ const App = {
     document.getElementById('btnDontKnow').addEventListener('click', () => this.handleKnow(false));
     document.getElementById('learnCard').addEventListener('click', () => {
       const card = document.getElementById('learnCard');
+      if (card.dataset.swiped) return; // 滑动后不触发翻转
       card.classList.toggle('flipped');
       if (card.classList.contains('flipped')) {
         Quiz.playSound('flip');
       }
     });
+    // 滑动手势
+    this.initSwipeGesture();
     document.getElementById('learnSpeakBtn').addEventListener('click', (e) => {
       e.stopPropagation();
       const word = this.state.dailyWords[this.state.currentIndex];
@@ -158,6 +165,17 @@ const App = {
         this.showToast('进度已重置');
         this.navigate('home');
       }
+    });
+    // 主题切换
+    var self = this;
+    document.querySelectorAll('.theme-opt').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.theme-opt').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var theme = btn.dataset.theme;
+        self.applyTheme(theme);
+        Storage.saveSettings({ theme: theme });
+      });
     });
   },
 
@@ -198,12 +216,12 @@ const App = {
     const accuracy = stats.totalAttempts > 0
       ? Math.round((stats.totalCorrect / stats.totalAttempts) * 100) : 0;
 
-    document.getElementById('learnedCount').textContent = daily.learned;
-    document.getElementById('streakDays').textContent = streak;
-    document.getElementById('accuracyRate').textContent = accuracy + '%';
-    document.getElementById('totalLearned').textContent = stats.totalLearned;
-    document.getElementById('wrongCount').textContent = Storage.getWrongWords().length;
-    document.getElementById('bookCount').textContent = Storage.getWordbook().length;
+    this.countUp('learnedCount', daily.learned);
+    this.countUp('streakDays', streak);
+    this.countUpTo('accuracyRate', accuracy, '%');
+    this.countUp('totalLearned', stats.totalLearned);
+    this.countUp('wrongCount', Storage.getWrongWords().length);
+    this.countUp('bookCount', Storage.getWordbook().length);
 
     // 更新圆形进度
     const circle = document.getElementById('progressCircle');
@@ -226,10 +244,10 @@ const App = {
   // ===== 学段/年级切换 =====
   setLevel: function (level) {
     this.state.level = level;
-    // 默认年级
     var defaults = { college: 'core', primary: 'grade1', junior: 'grade7', senior: 'grade10' };
     this.state.grade = defaults[level] || 'core';
     Storage.saveSettings({ level: this.state.level, grade: this.state.grade });
+    loadLevelData(level).catch(function () {});
     this.renderHome();
   },
 
@@ -261,21 +279,22 @@ const App = {
   // ===== 学习模式 =====
   startLearn() {
     if (this.state.mode === 'learn' && this.state.dailyWords.length > 0) {
-      // 已在学习模式，继续
       this.navigate('learn');
       this.renderLearnCard();
       return;
     }
-    const all = getAllWords(this.state.level, this.state.grade);
-    if (all.length === 0) {
-      this.showToast('词库为空');
-      return;
-    }
-    // 随机打乱作为今日学习列表
-    this.state.dailyWords = Quiz.shuffle(all);
-    this.state.currentIndex = 0;
-    this.navigate('learn');
-    this.renderLearnCard();
+    var self = this;
+    loadLevelData(this.state.level).then(function () {
+      var all = getAllWords(self.state.level, self.state.grade);
+      if (all.length === 0) {
+        self.showToast('词库为空');
+        return;
+      }
+      self.state.dailyWords = Quiz.shuffle(all);
+      self.state.currentIndex = 0;
+      self.navigate('learn');
+      self.renderLearnCard();
+    });
   },
 
   renderLearnCard() {
@@ -334,19 +353,101 @@ const App = {
     }
   },
 
+  // ===== 滑动手势（学习卡片） =====
+  initSwipeGesture: function () {
+    var el = document.getElementById('learnCard');
+    var self = this;
+    var startX = 0, startY = 0, dx = 0, swiping = false, locked = false;
+    var THRESHOLD = 80;
+
+    el.addEventListener('touchstart', function (e) {
+      if (self.state.mode !== 'learn') return;
+      var t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      dx = 0;
+      swiping = false;
+      locked = false;
+      el.dataset.swiped = '';
+    }, { passive: true });
+
+    el.addEventListener('touchmove', function (e) {
+      if (self.state.mode !== 'learn' || locked) return;
+      var t = e.touches[0];
+      var deltaX = t.clientX - startX;
+      var deltaY = t.clientY - startY;
+      // 水平滑动为主时才处理
+      if (!swiping && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+        swiping = true;
+        el.classList.add('swiping');
+      }
+      if (!swiping) return;
+      e.preventDefault();
+      dx = deltaX;
+      var inner = el.querySelector('.card-inner');
+      var rotate = dx * 0.05;
+      inner.style.transform = 'translateX(' + dx + 'px) rotate(' + rotate + 'deg)';
+      // 显示指示器
+      if (dx > 30) {
+        el.classList.add('swipe-right');
+        el.classList.remove('swipe-left');
+      } else if (dx < -30) {
+        el.classList.add('swipe-left');
+        el.classList.remove('swipe-right');
+      } else {
+        el.classList.remove('swipe-left', 'swipe-right');
+      }
+    }, { passive: false });
+
+    el.addEventListener('touchend', function () {
+      if (self.state.mode !== 'learn' || !swiping) {
+        el.dataset.swiped = '';
+        return;
+      }
+      locked = true;
+      el.classList.remove('swiping', 'swipe-left', 'swipe-right');
+      var inner = el.querySelector('.card-inner');
+
+      if (Math.abs(dx) >= THRESHOLD) {
+        // 飞出
+        var know = dx > 0;
+        el.classList.add(know ? 'fly-right' : 'fly-left');
+        el.dataset.swiped = '1';
+        setTimeout(function () {
+          el.classList.remove('fly-right', 'fly-left');
+          inner.style.transform = '';
+          el.classList.add('enter');
+          self.handleKnow(know);
+          setTimeout(function () { el.classList.remove('enter'); }, 300);
+        }, 300);
+      } else {
+        // 弹回
+        inner.style.transition = 'transform 0.25s cubic-bezier(0, 0, 0.2, 1)';
+        inner.style.transform = '';
+        setTimeout(function () {
+          inner.style.transition = '';
+          el.dataset.swiped = '';
+        }, 250);
+      }
+    }, { passive: true });
+  },
+
   // ===== 测验模式 =====
   startQuiz() {
-    const all = getAllWords(this.state.level, this.state.grade);
-    if (all.length < 4) {
-      this.showToast('词库单词不足，至少需要4个');
-      return;
-    }
-    this.state.quizWords = Quiz.shuffle(all);
-    this.state.quizIndex = 0;
-    this.state.quizCorrect = 0;
-    this.state.isQuizAnswered = false;
-    this.navigate('quiz');
-    this.renderQuizCard();
+    var self = this;
+    loadLevelData(this.state.level).then(function () {
+      var all = getAllWords(self.state.level, self.state.grade);
+      if (all.length < 4) {
+        self.showToast('词库单词不足，至少需要4个');
+        return;
+      }
+      self.state.quizWords = Quiz.shuffle(all);
+      self.state.quizIndex = 0;
+      self.state.quizCorrect = 0;
+      self.state.isQuizAnswered = false;
+      self.navigate('quiz');
+      self.renderQuizCard();
+    });
   },
 
   renderQuizCard() {
@@ -441,6 +542,13 @@ const App = {
 
   // ===== 错题复习 =====
   renderReview() {
+    var self = this;
+    var levels = ['primary', 'junior', 'senior', 'college'];
+    Promise.all(levels.map(function (lv) { return loadLevelData(lv); })).then(function () {
+      self._renderReviewInner();
+    });
+  },
+  _renderReviewInner() {
     const wrongIds = Storage.getWrongWords();
     const all = getAllWords();
     const words = all.filter(w => wrongIds.includes(w.id));
@@ -479,6 +587,13 @@ const App = {
 
   // ===== 单词本 =====
   renderWordbook() {
+    var self = this;
+    var levels = ['primary', 'junior', 'senior', 'college'];
+    Promise.all(levels.map(function (lv) { return loadLevelData(lv); })).then(function () {
+      self._renderWordbookInner();
+    });
+  },
+  _renderWordbookInner() {
     const bookIds = Storage.getWordbook();
     const all = getAllWords();
     const words = all.filter(w => bookIds.includes(w.id));
@@ -518,17 +633,20 @@ const App = {
 
   // ===== 拼写模式 =====
   startSpell() {
-    const all = getAllWords(this.state.level, this.state.grade);
-    if (all.length === 0) {
-      this.showToast('词库为空');
-      return;
-    }
-    this.state.spellWords = Quiz.shuffle(all);
-    this.state.spellIndex = 0;
-    this.state.spellCorrect = 0;
-    this.state.isSpellAnswered = false;
-    this.navigate('spell');
-    this.renderSpellCard();
+    var self = this;
+    loadLevelData(this.state.level).then(function () {
+      var all = getAllWords(self.state.level, self.state.grade);
+      if (all.length === 0) {
+        self.showToast('词库为空');
+        return;
+      }
+      self.state.spellWords = Quiz.shuffle(all);
+      self.state.spellIndex = 0;
+      self.state.spellCorrect = 0;
+      self.state.isSpellAnswered = false;
+      self.navigate('spell');
+      self.renderSpellCard();
+    });
   },
 
   renderSpellCard() {
@@ -605,6 +723,11 @@ const App = {
     document.getElementById('settingGoal').value = settings.dailyGoal;
     document.getElementById('settingRate').value = settings.speechRate;
     document.getElementById('settingRateVal').textContent = settings.speechRate;
+    // 高亮当前主题按钮
+    var theme = settings.theme || 'auto';
+    document.querySelectorAll('.theme-opt').forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.theme === theme);
+    });
     document.getElementById('settingsOverlay').style.display = 'flex';
   },
 
@@ -613,6 +736,56 @@ const App = {
     const rate = parseFloat(document.getElementById('settingRate').value) || 0.9;
     Storage.saveSettings({ dailyGoal: Math.min(200, Math.max(10, goal)), speechRate: rate });
     document.getElementById('settingsOverlay').style.display = 'none';
+  },
+
+  applyTheme: function (theme) {
+    var root = document.documentElement;
+    if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+    } else if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.removeAttribute('data-theme');
+    }
+    localStorage.setItem('vocab_theme', theme);
+    // 更新 theme-color meta
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0f0f1a' : '#4A90D9');
+  },
+
+  // ===== 数字递增动画 =====
+  countUp: function (id, target) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var current = parseInt(el.textContent) || 0;
+    if (current === target) return;
+    var duration = 400;
+    var start = performance.now();
+    var from = current;
+    function tick(now) {
+      var t = Math.min((now - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      el.textContent = Math.round(from + (target - from) * ease);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  },
+
+  countUpTo: function (id, target, suffix) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var current = parseInt(el.textContent) || 0;
+    if (current === target) { el.textContent = target + suffix; return; }
+    var duration = 400;
+    var start = performance.now();
+    var from = current;
+    function tick(now) {
+      var t = Math.min((now - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(from + (target - from) * ease) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   },
 
   // ===== Toast =====
