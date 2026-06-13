@@ -62,10 +62,8 @@
 
 :root {
   --primary: #4A90D9;
-  --primary-dark: #357ABD;
   --success: #27AE60;
   --danger: #E74C3C;
-  --warning: #F39C12;
   --bg: #F5F7FA;
   --card-bg: #FFFFFF;
   --text: #2C3E50;
@@ -84,10 +82,8 @@
 /* ===== 深色模式 ===== */
 [data-theme="dark"] {
   --primary: #5BA0E9;
-  --primary-dark: #4A90D9;
   --success: #2ECC71;
   --danger: #E74C3C;
-  --warning: #F39C12;
   --bg: #0f0f1a;
   --card-bg: #1a1a2e;
   --text: #e0e0e0;
@@ -103,10 +99,8 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --primary: #5BA0E9;
-    --primary-dark: #4A90D9;
     --success: #2ECC71;
     --danger: #E74C3C;
-    --warning: #F39C12;
     --bg: #0f0f1a;
     --card-bg: #1a1a2e;
     --text: #e0e0e0;
@@ -204,6 +198,7 @@ body {
   display: flex;
   justify-content: center;
   margin: 12px 0 20px;
+  position: relative;
 }
 
 .progress-ring {
@@ -246,10 +241,6 @@ body {
   font-size: 12px;
   color: var(--text-light);
   display: block;
-}
-
-.stats-ring-container {
-  position: relative;
 }
 
 .stats-row {

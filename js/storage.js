@@ -66,10 +66,6 @@ const Storage = {
     return idx === -1; // true = 已收藏, false = 已取消
   },
 
-  isInWordbook(wordId) {
-    return this.getWordbook().includes(wordId);
-  },
-
   // ===== 打卡记录 =====
   getCheckins() {
     return JSON.parse(localStorage.getItem('vocab_checkins') || '[]');

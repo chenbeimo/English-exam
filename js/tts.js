@@ -60,23 +60,15 @@ const TTS = {
   },
 
   // ===== 发音主入口（美式） =====
-  speakWord: function (word) {
+  speakWord: function (word, rate) {
     if (!this.unlocked) {
       this.unlock();
     }
-    this._speak(word);
-  },
-
-  speakExample: function (sentence) {
-    this.speakWord(sentence);
-  },
-
-  speak: function (text) {
-    this.speakWord(text);
+    this._speak(word, rate);
   },
 
   // ===== 内部发音逻辑 =====
-  _speak: function (word) {
+  _speak: function (word, rate) {
     var self = this;
     var text = word.trim();
     var used = false;
@@ -95,7 +87,7 @@ const TTS = {
         var u = new SpeechSynthesisUtterance(text);
         u.voice = voice;
         u.lang = 'en-US';
-        u.rate = 0.9;
+        u.rate = rate || 0.9;
         u.volume = 1;
 
         var resolved = false;
@@ -172,10 +164,7 @@ const TTS = {
       clearTimeout(timer);
       doBaidu();
     });
-  },
-
-  ensureVoice: function () {},
-  loadVoices: function () {}
+  }
 };
 
 TTS.init();

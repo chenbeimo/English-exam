@@ -87,7 +87,3 @@ function collectLevel(level, key, words) {
     }
   }
 }
-
-function getWordCount(level, grade) {
-  return getAllWords(level, grade).length;
-}

@@ -1,4 +1,4 @@
-j'x// 主应用逻辑
+// 主应用逻辑
 const App = {
   // ===== 状态 =====
   state: {
@@ -218,7 +218,7 @@ const App = {
 
     this.countUp('learnedCount', daily.learned);
     this.countUp('streakDays', streak);
-    this.countUpTo('accuracyRate', accuracy, '%');
+    this.countUp('accuracyRate', accuracy, '%');
     this.countUp('totalLearned', stats.totalLearned);
     this.countUp('wrongCount', Storage.getWrongWords().length);
     this.countUp('bookCount', Storage.getWordbook().length);
@@ -754,35 +754,19 @@ const App = {
   },
 
   // ===== 数字递增动画 =====
-  countUp: function (id, target) {
+  countUp: function (id, target, suffix) {
     var el = document.getElementById(id);
     if (!el) return;
+    var sfx = suffix || '';
     var current = parseInt(el.textContent) || 0;
-    if (current === target) return;
-    var duration = 400;
-    var start = performance.now();
-    var from = current;
-    function tick(now) {
-      var t = Math.min((now - start) / duration, 1);
-      var ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
-      el.textContent = Math.round(from + (target - from) * ease);
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  },
-
-  countUpTo: function (id, target, suffix) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    var current = parseInt(el.textContent) || 0;
-    if (current === target) { el.textContent = target + suffix; return; }
+    if (current === target) { el.textContent = target + sfx; return; }
     var duration = 400;
     var start = performance.now();
     var from = current;
     function tick(now) {
       var t = Math.min((now - start) / duration, 1);
       var ease = 1 - Math.pow(1 - t, 3);
-      el.textContent = Math.round(from + (target - from) * ease) + suffix;
+      el.textContent = Math.round(from + (target - from) * ease) + sfx;
       if (t < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
