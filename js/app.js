@@ -19,11 +19,8 @@ const App = {
     challengeLevelKey: '',
     challengeWords: [],
     challengeQIndex: 0,
-    challengeHP: 3,
     challengeStreak: 0,
-    challengeCorrect: 0,
-    challengeTimer: null,
-    challengeTimeLeft: 15
+    challengeCorrect: 0
   },
 
   // ===== 初始化 =====
@@ -926,7 +923,6 @@ const App = {
     this.state.challengeLevelKey = levelPrefix + '-' + (levelIndex + 1);
     this.state.challengeWords = Quiz.shuffle(words).slice(0, 5);
     this.state.challengeQIndex = 0;
-    this.state.challengeHP = 3;
     this.state.challengeStreak = 0;
     this.state.challengeCorrect = 0;
 
@@ -943,7 +939,7 @@ const App = {
     var qIdx = this.state.challengeQIndex;
     var words = this.state.challengeWords;
 
-    if (qIdx >= words.length || this.state.challengeHP <= 0) {
+    if (qIdx >= words.length) {
       this.showChallengeResult();
       return;
     }
@@ -952,11 +948,6 @@ const App = {
     var self = this;
 
     // 更新顶部信息
-    var hpStr = '';
-    for (var i = 0; i < 3; i++) {
-      hpStr += i < this.state.challengeHP ? '❤️' : '🖤';
-    }
-    document.getElementById('challengeHP').textContent = hpStr;
     document.getElementById('challengeQInfo').textContent = (qIdx + 1) + '/' + words.length;
 
     var comboEl = document.getElementById('challengeCombo');
@@ -968,9 +959,6 @@ const App = {
 
     var questionEl = document.getElementById('challengeQuestion');
     var optionsEl = document.getElementById('challengeOptions');
-
-    // 开始计时
-    this.startChallengeTimer();
 
     if (qType === 0) {
       // 选择题：看英文选中文
@@ -1063,8 +1051,6 @@ const App = {
 
   // 处理闯关答案
   handleChallengeAnswer: function (isCorrect, btnEl, word) {
-    this.stopChallengeTimer();
-
     // 防止重复点击
     if (this.state.challengeQIndex >= this.state.challengeWords.length) return;
 
@@ -1089,7 +1075,6 @@ const App = {
       }
     } else {
       // 错误
-      this.state.challengeHP--;
       this.state.challengeStreak = 0;
       if (btnEl) btnEl.classList.add('wrong');
       Quiz.playSound('wrong');
@@ -1111,40 +1096,8 @@ const App = {
     }, 1200);
   },
 
-  // 闯关计时器
-  startChallengeTimer: function () {
-    var self = this;
-    this.state.challengeTimeLeft = 15;
-    var fill = document.getElementById('challengeTimerFill');
-    fill.style.width = '100%';
-    fill.classList.remove('danger');
-
-    clearInterval(this.state.challengeTimer);
-    this.state.challengeTimer = setInterval(function () {
-      self.state.challengeTimeLeft -= 0.1;
-      var pct = (self.state.challengeTimeLeft / 15) * 100;
-      fill.style.width = pct + '%';
-      if (pct < 30) fill.classList.add('danger');
-      if (self.state.challengeTimeLeft <= 0) {
-        self.stopChallengeTimer();
-        self.state.challengeHP--;
-        self.state.challengeStreak = 0;
-        Quiz.playSound('wrong');
-        var word = self.state.challengeWords[self.state.challengeQIndex];
-        self.state.challengeQIndex++;
-        setTimeout(function () { self.renderChallengeQuestion(); }, 500);
-      }
-    }, 100);
-  },
-
-  stopChallengeTimer: function () {
-    clearInterval(this.state.challengeTimer);
-  },
-
   // 显示闯关结算
   showChallengeResult: function () {
-    this.stopChallengeTimer();
-
     var correct = this.state.challengeCorrect;
     var total = this.state.challengeWords.length;
     var stars = correct >= 5 ? 3 : correct >= 4 ? 2 : correct >= 3 ? 1 : 0;
