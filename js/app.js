@@ -14,7 +14,16 @@ const App = {
     spellIndex: 0,
     spellCorrect: 0,
     isQuizAnswered: false,
-    isSpellAnswered: false
+    isSpellAnswered: false,
+    // 闯关模式
+    challengeLevelKey: '',
+    challengeWords: [],
+    challengeQIndex: 0,
+    challengeHP: 3,
+    challengeStreak: 0,
+    challengeCorrect: 0,
+    challengeTimer: null,
+    challengeTimeLeft: 15
   },
 
   // ===== 初始化 =====
@@ -75,6 +84,8 @@ const App = {
           this.startLearn();
         } else if (nav === 'quiz') {
           this.startQuiz();
+        } else if (nav === 'challenge') {
+          this.startChallenge();
         } else {
           this.navigate(nav);
         }
@@ -111,6 +122,7 @@ const App = {
         else if (nav === 'learn') this.startLearn();
         else if (nav === 'quiz') this.startQuiz();
         else if (nav === 'spell') this.startSpell();
+        else if (nav === 'challenge') this.startChallenge();
       });
     });
 
@@ -196,7 +208,8 @@ const App = {
     // 更新标题
     const titles = {
       home: '无道词典', learn: '学习模式', quiz: '测验模式',
-      review: '错题复习', wordbook: '单词本', spell: '拼写模式'
+      review: '错题复习', wordbook: '单词本', spell: '拼写模式',
+      challenge: '闯关模式'
     };
     document.getElementById('pageTitle').textContent = titles[mode] || '无道词典';
     // 渲染对应视图
@@ -204,6 +217,7 @@ const App = {
       case 'home': this.renderHome(); break;
       case 'review': this.renderReview(); break;
       case 'wordbook': this.renderWordbook(); break;
+      case 'challenge': this.renderChallengeMap(); break;
     }
   },
 
@@ -781,6 +795,446 @@ const App = {
     this._toastTimeout = setTimeout(() => {
       toast.style.display = 'none';
     }, 2000);
+  },
+
+  // ===== 闯关模式 =====
+  startChallenge: function () {
+    var self = this;
+    loadLevelData(this.state.level).then(function () {
+      self.navigate('challenge');
+    });
+  },
+
+  // 获取当前学段的关卡列表
+  _getChallengeLevels: function () {
+    var all = getAllWords(this.state.level, this.state.grade);
+    var perLevel = 10;
+    var levels = [];
+    for (var i = 0; i < all.length; i += perLevel) {
+      levels.push(all.slice(i, i + perLevel));
+    }
+    return levels;
+  },
+
+  // 渲染闯关地图
+  renderChallengeMap: function () {
+    var prog = Storage.getChallengeProgress();
+    var levels = this._getChallengeLevels();
+    var levelPrefix = this.state.level + '-' + this.state.grade;
+
+    // 更新统计
+    document.getElementById('challengeCoins').textContent = prog.coins || 0;
+    document.getElementById('challengeStreak').textContent = prog.streak || 0;
+    document.getElementById('challengeDailyProgress').textContent = prog.dailyCleared || 0;
+    document.getElementById('challengeDailyGoal').textContent = prog.dailyGoal || 10;
+
+    // 更新每日目标按钮
+    var self = this;
+    document.querySelectorAll('.challenge-goal-opt').forEach(function (btn) {
+      btn.classList.toggle('active', parseInt(btn.dataset.goal) === prog.dailyGoal);
+      btn.onclick = function () {
+        prog.dailyGoal = parseInt(btn.dataset.goal);
+        Storage.saveChallengeProgress({ dailyGoal: prog.dailyGoal });
+        document.querySelectorAll('.challenge-goal-opt').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        document.getElementById('challengeDailyGoal').textContent = prog.dailyGoal;
+      };
+    });
+
+    // 渲染地图节点
+    var path = document.getElementById('challengePath');
+    path.innerHTML = '';
+
+    // 检查每日日期重置
+    var today = new Date().toDateString();
+    if (prog.dailyDate !== today) {
+      var yesterday = new Date(Date.now() - 86400000).toDateString();
+      var newStreak = (prog.dailyDate === yesterday && prog.dailyCleared > 0) ? (prog.streak || 0) + 1 : 0;
+      Storage.saveChallengeProgress({ dailyDate: today, dailyCleared: 0, streak: newStreak });
+      prog.dailyCleared = 0;
+      prog.streak = newStreak;
+    }
+
+    for (var i = 0; i < levels.length; i++) {
+      var key = levelPrefix + '-' + (i + 1);
+      var levelProg = prog.levels[key] || { stars: 0, best: 0 };
+
+      // 连接线
+      if (i > 0) {
+        var conn = document.createElement('div');
+        conn.className = 'challenge-connector' + (levelProg.stars > 0 ? ' active' : '');
+        path.appendChild(conn);
+      }
+
+      // 节点
+      var node = document.createElement('div');
+      node.className = 'challenge-node';
+      node.dataset.levelIndex = i;
+
+      var prevKey = levelPrefix + '-' + i;
+      var prevStars = i === 0 ? 1 : (prog.levels[prevKey] || { stars: 0 }).stars;
+
+      if (levelProg.stars > 0) {
+        node.classList.add('cleared');
+        node.innerHTML = (i + 1) + '<span class="stars">' + '⭐'.repeat(levelProg.stars) + '</span>';
+      } else if (prevStars > 0) {
+        node.classList.add('available');
+        node.textContent = i + 1;
+      } else {
+        node.classList.add('locked');
+        node.innerHTML = '🔒';
+      }
+
+      node.addEventListener('click', (function (idx, isLocked) {
+        return function () {
+          if (isLocked) return;
+          self.enterLevel(idx);
+        };
+      })(i, node.classList.contains('locked')));
+
+      path.appendChild(node);
+    }
+
+    // 渲染徽章
+    var badges = document.getElementById('challengeBadges');
+    var badgeDefs = [
+      { id: 'first_clear', icon: '🎯', name: '首次通关' },
+      { id: 'combo3', icon: '🔥', name: '连对3题' },
+      { id: 'combo5', icon: '💥', name: '连对5题' },
+      { id: 'perfect_grade', icon: '👑', name: '全3星' },
+      { id: 'streak7', icon: '📅', name: '连续7天' },
+      { id: 'coins500', icon: '💰', name: '500金币' }
+    ];
+    badges.innerHTML = badgeDefs.map(function (b) {
+      var earned = (prog.badges || []).includes(b.id);
+      return '<div class="badge-item' + (earned ? ' earned' : '') + '" title="' + b.name + '">' + b.icon + '</div>';
+    }).join('');
+
+    // 显示地图，隐藏答题和结算
+    document.getElementById('challengeMap').style.display = 'block';
+    document.getElementById('challengePlay').style.display = 'none';
+    document.getElementById('challengeResult').style.display = 'none';
+  },
+
+  // 进入关卡
+  enterLevel: function (levelIndex) {
+    var levels = this._getChallengeLevels();
+    if (levelIndex >= levels.length) return;
+
+    var words = levels[levelIndex];
+    var levelPrefix = this.state.level + '-' + this.state.grade;
+    this.state.challengeLevelKey = levelPrefix + '-' + (levelIndex + 1);
+    this.state.challengeWords = Quiz.shuffle(words).slice(0, 5);
+    this.state.challengeQIndex = 0;
+    this.state.challengeHP = 3;
+    this.state.challengeStreak = 0;
+    this.state.challengeCorrect = 0;
+
+    // 切换到答题视图
+    document.getElementById('challengeMap').style.display = 'none';
+    document.getElementById('challengePlay').style.display = 'flex';
+    document.getElementById('challengeResult').style.display = 'none';
+
+    this.renderChallengeQuestion();
+  },
+
+  // 渲染闯关题目
+  renderChallengeQuestion: function () {
+    var qIdx = this.state.challengeQIndex;
+    var words = this.state.challengeWords;
+
+    if (qIdx >= words.length || this.state.challengeHP <= 0) {
+      this.showChallengeResult();
+      return;
+    }
+
+    var word = words[qIdx];
+    var self = this;
+
+    // 更新顶部信息
+    var hpStr = '';
+    for (var i = 0; i < 3; i++) {
+      hpStr += i < this.state.challengeHP ? '❤️' : '🖤';
+    }
+    document.getElementById('challengeHP').textContent = hpStr;
+    document.getElementById('challengeQInfo').textContent = (qIdx + 1) + '/' + words.length;
+
+    var comboEl = document.getElementById('challengeCombo');
+    comboEl.textContent = this.state.challengeStreak >= 2 ? '×' + this.state.challengeStreak + ' Combo!' : '';
+
+    // 随机题型：0=选择, 1=听音选词, 2=拼写, 3=例句填空
+    var types = [0, 0, 1, 2, 3];
+    var qType = types[qIdx % types.length];
+
+    var questionEl = document.getElementById('challengeQuestion');
+    var optionsEl = document.getElementById('challengeOptions');
+
+    // 开始计时
+    this.startChallengeTimer();
+
+    if (qType === 0) {
+      // 选择题：看英文选中文
+      questionEl.innerHTML =
+        '<div class="challenge-q-type">选择释义</div>' +
+        '<div class="challenge-q-word">' + word.word + '</div>' +
+        '<div class="challenge-q-phonetic">' + word.phonetic + '</div>';
+      var pool = getAllWords(this.state.level, this.state.grade);
+      var opts = Quiz.generateOptions(word, pool, 4);
+      optionsEl.innerHTML = '';
+      opts.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.className = 'challenge-opt';
+        btn.textContent = opt.meaning;
+        btn.addEventListener('click', function () {
+          self.handleChallengeAnswer(opt.id === word.id, btn, word);
+        });
+        optionsEl.appendChild(btn);
+      });
+
+    } else if (qType === 1) {
+      // 听音选词
+      questionEl.innerHTML =
+        '<div class="challenge-q-type">听音选词</div>' +
+        '<button class="speak-btn large" id="challengeSpeakBtn">🔊 播放发音</button>';
+      document.getElementById('challengeSpeakBtn').addEventListener('click', function () {
+        TTS.speakWord(word.word, Storage.getSettings().speechRate);
+      });
+      // 自动播放一次
+      setTimeout(function () { TTS.speakWord(word.word, Storage.getSettings().speechRate); }, 300);
+      var pool = getAllWords(this.state.level, this.state.grade);
+      var opts = Quiz.generateOptions(word, pool, 4);
+      optionsEl.innerHTML = '';
+      opts.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.className = 'challenge-opt';
+        btn.textContent = opt.word;
+        btn.addEventListener('click', function () {
+          self.handleChallengeAnswer(opt.id === word.id, btn, word);
+        });
+        optionsEl.appendChild(btn);
+      });
+
+    } else if (qType === 2) {
+      // 拼写题
+      questionEl.innerHTML =
+        '<div class="challenge-q-type">拼写单词</div>' +
+        '<div class="challenge-q-word" style="font-size:22px;">' + word.meaning + '</div>' +
+        '<div class="challenge-q-phonetic">' + word.phonetic + '</div>';
+      optionsEl.innerHTML =
+        '<div class="challenge-spell-wrap">' +
+        '<input type="text" class="challenge-spell-input" id="challengeSpellInput" placeholder="输入英文单词..." autocomplete="off" autocapitalize="off">' +
+        '<button class="challenge-spell-btn" id="challengeSpellSubmit">确定</button>' +
+        '</div>';
+      var input = document.getElementById('challengeSpellInput');
+      var submitBtn = document.getElementById('challengeSpellSubmit');
+      var submitSpell = function () {
+        var answer = input.value.trim().toLowerCase();
+        var correct = answer === word.word.toLowerCase();
+        self.handleChallengeAnswer(correct, null, word);
+      };
+      submitBtn.addEventListener('click', submitSpell);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') submitSpell();
+      });
+      setTimeout(function () { input.focus(); }, 100);
+
+    } else {
+      // 例句填空
+      var example = word.example;
+      var blank = example.replace(new RegExp(word.word, 'i'), '______');
+      questionEl.innerHTML =
+        '<div class="challenge-q-type">例句填空</div>' +
+        '<div class="challenge-q-example">' + blank + '</div>' +
+        '<div class="challenge-q-phonetic" style="margin-top:8px;">' + word.meaning + '</div>';
+      var pool = getAllWords(this.state.level, this.state.grade);
+      var opts = Quiz.generateOptions(word, pool, 4);
+      optionsEl.innerHTML = '';
+      opts.forEach(function (opt) {
+        var btn = document.createElement('button');
+        btn.className = 'challenge-opt';
+        btn.textContent = opt.word;
+        btn.addEventListener('click', function () {
+          self.handleChallengeAnswer(opt.id === word.id, btn, word);
+        });
+        optionsEl.appendChild(btn);
+      });
+    }
+  },
+
+  // 处理闯关答案
+  handleChallengeAnswer: function (isCorrect, btnEl, word) {
+    this.stopChallengeTimer();
+
+    // 防止重复点击
+    if (this.state.challengeQIndex >= this.state.challengeWords.length) return;
+
+    var optionsEl = document.getElementById('challengeOptions');
+
+    if (isCorrect) {
+      // 正确
+      this.state.challengeCorrect++;
+      this.state.challengeStreak++;
+      if (btnEl) btnEl.classList.add('correct');
+      Quiz.playSound('correct');
+
+      // Combo 提示
+      if (this.state.challengeStreak === 3 || this.state.challengeStreak === 5) {
+        var combo = document.createElement('div');
+        combo.className = 'challenge-combo-float';
+        combo.textContent = '×' + this.state.challengeStreak + ' Combo!';
+        document.body.appendChild(combo);
+        setTimeout(function () { combo.remove(); }, 900);
+        if (this.state.challengeStreak === 3) Storage.addChallengeBadge('combo3');
+        if (this.state.challengeStreak === 5) Storage.addChallengeBadge('combo5');
+      }
+    } else {
+      // 错误
+      this.state.challengeHP--;
+      this.state.challengeStreak = 0;
+      if (btnEl) btnEl.classList.add('wrong');
+      Quiz.playSound('wrong');
+
+      // 显示正确答案
+      var opts = optionsEl.querySelectorAll('.challenge-opt');
+      opts.forEach(function (opt) {
+        if (opt.textContent === word.meaning || opt.textContent === word.word) {
+          opt.classList.add('correct');
+        }
+      });
+    }
+
+    // 延迟进入下一题
+    var self = this;
+    setTimeout(function () {
+      self.state.challengeQIndex++;
+      self.renderChallengeQuestion();
+    }, 1200);
+  },
+
+  // 闯关计时器
+  startChallengeTimer: function () {
+    var self = this;
+    this.state.challengeTimeLeft = 15;
+    var fill = document.getElementById('challengeTimerFill');
+    fill.style.width = '100%';
+    fill.classList.remove('danger');
+
+    clearInterval(this.state.challengeTimer);
+    this.state.challengeTimer = setInterval(function () {
+      self.state.challengeTimeLeft -= 0.1;
+      var pct = (self.state.challengeTimeLeft / 15) * 100;
+      fill.style.width = pct + '%';
+      if (pct < 30) fill.classList.add('danger');
+      if (self.state.challengeTimeLeft <= 0) {
+        self.stopChallengeTimer();
+        self.state.challengeHP--;
+        self.state.challengeStreak = 0;
+        Quiz.playSound('wrong');
+        var word = self.state.challengeWords[self.state.challengeQIndex];
+        self.state.challengeQIndex++;
+        setTimeout(function () { self.renderChallengeQuestion(); }, 500);
+      }
+    }, 100);
+  },
+
+  stopChallengeTimer: function () {
+    clearInterval(this.state.challengeTimer);
+  },
+
+  // 显示闯关结算
+  showChallengeResult: function () {
+    this.stopChallengeTimer();
+
+    var correct = this.state.challengeCorrect;
+    var total = this.state.challengeWords.length;
+    var stars = correct >= 5 ? 3 : correct >= 4 ? 2 : correct >= 3 ? 1 : 0;
+    var coins = stars === 3 ? 20 : stars === 2 ? 10 : stars === 1 ? 5 : 0;
+
+    // 保存进度
+    var prog = Storage.getChallengeProgress();
+    var key = this.state.challengeLevelKey;
+    var prev = prog.levels[key] || { stars: 0, best: 0 };
+    prog.levels[key] = {
+      stars: Math.max(prev.stars, stars),
+      best: Math.max(prev.best, correct)
+    };
+    prog.coins = (prog.coins || 0) + coins;
+
+    // 每日进度
+    var today = new Date().toDateString();
+    if (prog.dailyDate !== today) {
+      prog.dailyDate = today;
+      prog.dailyCleared = 0;
+    }
+    if (stars > 0) prog.dailyCleared++;
+
+    // 连胜天数
+    if (prog.dailyCleared >= prog.dailyGoal) {
+      var yesterday = new Date(Date.now() - 86400000).toDateString();
+      if (prog.lastStreakDate === yesterday) {
+        prog.streak = (prog.streak || 0) + 1;
+      } else if (prog.lastStreakDate !== today) {
+        prog.streak = 1;
+      }
+      prog.lastStreakDate = today;
+    }
+
+    Storage.saveChallengeProgress(prog);
+
+    // 成就检查
+    var newBadge = null;
+    if (stars > 0) newBadge = Storage.addChallengeBadge('first_clear') ? '首次通关' : newBadge;
+    if (prog.streak >= 7) newBadge = Storage.addChallengeBadge('streak7') ? '连续7天' : newBadge;
+    if (prog.coins >= 500) newBadge = Storage.addChallengeBadge('coins500') ? '500金币' : newBadge;
+
+    // 检查全3星
+    var allLevels = this._getChallengeLevels();
+    var levelPrefix = this.state.level + '-' + this.state.grade;
+    var allPerfect = true;
+    for (var i = 0; i < allLevels.length; i++) {
+      var lk = levelPrefix + '-' + (i + 1);
+      var lp = prog.levels[lk];
+      if (!lp || lp.stars < 3) { allPerfect = false; break; }
+    }
+    if (allPerfect) newBadge = Storage.addChallengeBadge('perfect_grade') ? '全3星' : newBadge;
+
+    // 渲染结算
+    document.getElementById('challengeMap').style.display = 'none';
+    document.getElementById('challengePlay').style.display = 'none';
+    document.getElementById('challengeResult').style.display = 'block';
+
+    document.getElementById('resultTitle').textContent = stars > 0 ? '🎉 闯关成功！' : '😢 闯关失败';
+    document.getElementById('resultTitle').style.color = stars > 0 ? 'var(--success)' : 'var(--danger)';
+
+    var starsHtml = '';
+    for (var s = 0; s < 3; s++) {
+      starsHtml += '<span class="star">' + (s < stars ? '⭐' : '☆') + '</span>';
+    }
+    document.getElementById('resultStars').innerHTML = starsHtml;
+
+    document.getElementById('resultCoins').textContent = coins > 0 ? '+' + coins + ' 🪙' : '';
+    document.getElementById('resultScore').textContent = '答对 ' + correct + '/' + total + ' 题';
+
+    var badgeEl = document.getElementById('resultBadge');
+    badgeEl.innerHTML = newBadge ? '<div class="challenge-result-badge">🏅 ' + newBadge + '</div>' : '';
+
+    // 按钮事件
+    var self = this;
+    document.getElementById('btnRetryChallenge').onclick = function () {
+      var idx = parseInt(self.state.challengeLevelKey.split('-').pop()) - 1;
+      self.enterLevel(idx);
+    };
+    document.getElementById('btnNextChallenge').onclick = function () {
+      if (stars > 0) {
+        var nextIdx = parseInt(self.state.challengeLevelKey.split('-').pop());
+        var totalLevels = self._getChallengeLevels().length;
+        if (nextIdx < totalLevels) {
+          self.enterLevel(nextIdx);
+          return;
+        }
+      }
+      self.renderChallengeMap();
+    };
   }
 };
 

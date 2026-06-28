@@ -117,6 +117,44 @@ const Storage = {
     localStorage.setItem('vocab_settings', JSON.stringify(settings));
   },
 
+  // ===== 闯关模式 =====
+  getChallengeProgress() {
+    var defaults = {
+      levels: {},
+      coins: 0,
+      badges: [],
+      dailyGoal: 5,
+      dailyCleared: 0,
+      dailyDate: '',
+      streak: 0
+    };
+    var data = JSON.parse(localStorage.getItem('vocab_challenge') || '{}');
+    return Object.assign(defaults, data);
+  },
+
+  saveChallengeProgress(updates) {
+    var prog = this.getChallengeProgress();
+    Object.assign(prog, updates);
+    localStorage.setItem('vocab_challenge', JSON.stringify(prog));
+  },
+
+  addChallengeCoins(n) {
+    var prog = this.getChallengeProgress();
+    prog.coins = (prog.coins || 0) + n;
+    localStorage.setItem('vocab_challenge', JSON.stringify(prog));
+  },
+
+  addChallengeBadge(badgeId) {
+    var prog = this.getChallengeProgress();
+    if (!prog.badges) prog.badges = [];
+    if (!prog.badges.includes(badgeId)) {
+      prog.badges.push(badgeId);
+      localStorage.setItem('vocab_challenge', JSON.stringify(prog));
+      return true; // 新徽章
+    }
+    return false; // 已有
+  },
+
   // ===== 重置所有数据 =====
   resetAll() {
     localStorage.removeItem('vocab_daily');
@@ -125,5 +163,6 @@ const Storage = {
     localStorage.removeItem('vocab_book');
     localStorage.removeItem('vocab_checkins');
     localStorage.removeItem('vocab_settings');
+    localStorage.removeItem('vocab_challenge');
   }
 };

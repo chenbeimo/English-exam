@@ -83,6 +83,7 @@
         <div class="home-actions">
           <button class="action-btn primary" data-nav="learn">开始学习</button>
           <div class="action-grid">
+            <button class="action-btn" data-nav="challenge">🏆 闯关模式</button>
             <button class="action-btn" data-nav="quiz">测验模式</button>
             <button class="action-btn" data-nav="review">错题复习<span class="badge" id="wrongCount">0</span></button>
             <button class="action-btn" data-nav="wordbook">单词本<span class="badge" id="bookCount">0</span></button>
@@ -171,6 +172,65 @@
         </div>
         <div class="spell-feedback" id="spellFeedback" style="display:none"></div>
       </section>
+
+      <!-- ====== 闯关模式 ====== -->
+      <section id="view-challenge" class="view" style="display:none">
+        <!-- 地图子视图 -->
+        <div id="challengeMap" class="challenge-map-wrap">
+          <div class="challenge-map-header">
+            <h3 id="challengeMapTitle">闯关模式</h3>
+            <div class="challenge-stats-row">
+              <span>🪙 <span class="coin" id="challengeCoins">0</span></span>
+              <span>🔥 <span class="streak" id="challengeStreak">0</span>天连胜</span>
+            </div>
+            <div class="challenge-goal-picker" id="challengeGoalPicker">
+              <button class="challenge-goal-opt" data-goal="5">5关</button>
+              <button class="challenge-goal-opt active" data-goal="10">10关</button>
+              <button class="challenge-goal-opt" data-goal="20">20关</button>
+            </div>
+            <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
+              今日进度: <span id="challengeDailyProgress">0</span>/<span id="challengeDailyGoal">10</span>
+            </div>
+          </div>
+          <div class="challenge-path" id="challengePath">
+            <!-- 动态生成节点 -->
+          </div>
+          <div class="challenge-badges" id="challengeBadges">
+            <!-- 动态生成徽章 -->
+          </div>
+        </div>
+
+        <!-- 答题子视图 -->
+        <div id="challengePlay" class="challenge-play-wrap" style="display:none">
+          <div class="challenge-top-bar">
+            <div class="challenge-hp" id="challengeHP">❤️❤️❤️</div>
+            <div class="challenge-q-info" id="challengeQInfo">1/5</div>
+            <div class="challenge-combo" id="challengeCombo"></div>
+          </div>
+          <div class="challenge-timer-bar">
+            <div class="challenge-timer-fill" id="challengeTimerFill" style="width:100%"></div>
+          </div>
+          <div class="challenge-question" id="challengeQuestion">
+            <!-- 动态生成题目 -->
+          </div>
+          <div class="challenge-options" id="challengeOptions">
+            <!-- 动态生成选项 -->
+          </div>
+        </div>
+
+        <!-- 结算子视图 -->
+        <div id="challengeResult" class="challenge-result-wrap" style="display:none">
+          <div class="challenge-result-title" id="resultTitle">闯关成功！</div>
+          <div class="challenge-result-stars" id="resultStars"></div>
+          <div class="challenge-result-coins" id="resultCoins"></div>
+          <div class="challenge-result-score" id="resultScore"></div>
+          <div id="resultBadge"></div>
+          <div class="challenge-result-btns">
+            <button class="btn-retry" id="btnRetryChallenge">重玩</button>
+            <button class="btn-next" id="btnNextChallenge">下一关</button>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- 底部导航 -->
@@ -186,6 +246,10 @@
       <button class="nav-btn" data-nav="quiz">
         <span class="nav-icon">✏️</span>
         <span class="nav-label">测验</span>
+      </button>
+      <button class="nav-btn" data-nav="challenge">
+        <span class="nav-icon">🏆</span>
+        <span class="nav-label">闯关</span>
       </button>
       <button class="nav-btn" data-nav="review">
         <span class="nav-icon">📝</span>
