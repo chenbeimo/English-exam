@@ -238,8 +238,7 @@ const App = {
     if (!this._visitorStarted) {
       this._visitorStarted = true;
       this._visitorCount = 34;
-      var el = document.getElementById('busuanzi_value_site_uv');
-      el.textContent = '34';
+      var el = document.getElementById('visitorCount');
       var self = this;
       function tick() {
         var inc = Math.floor(Math.random() * 5) + 1;
