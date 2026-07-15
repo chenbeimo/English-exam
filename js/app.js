@@ -1201,9 +1201,7 @@ const App = {
     if (!el) return;
     el.textContent = '34';
     function tick() {
-      var inc = Math.floor(Math.random() * 5) + 1;
-      if (self._visitorCount < 10000) inc += Math.floor(Math.random() * 50) + 10;
-      self._visitorCount += inc;
+      self._visitorCount += 1;
       el.textContent = self._visitorCount.toLocaleString();
       setTimeout(tick, Math.random() * 3000 + 2000);
     }
