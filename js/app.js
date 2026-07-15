@@ -1195,11 +1195,11 @@ const App = {
 
   // 访客数动态增长
   _startVisitorCount: function () {
-    this._visitorCount = 34;
+    this._visitorCount = 518;
     var self = this;
     var el = document.getElementById('visitorCount');
     if (!el) return;
-    el.textContent = '34';
+    el.textContent = '518';
     function tick() {
       self._visitorCount += 1;
       el.textContent = self._visitorCount.toLocaleString();
