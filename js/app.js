@@ -234,26 +234,21 @@ const App = {
     this.countUp('wrongCount', Storage.getWrongWords().length);
     this.countUp('bookCount', Storage.getWordbook().length);
 
-    // 访客数动态增长
+    // 访客数动态增长（仅初始化一次）
     if (!this._visitorStarted) {
       this._visitorStarted = true;
-      var self = this;
+      this._visitorCount = 34;
       var el = document.getElementById('busuanzi_value_site_uv');
-      // 等 busuanzi 加载完成后读取初始值
-      setTimeout(function () {
-        var init = parseInt(el.textContent) || 0;
-        if (init < 1) init = 34;
-        self._visitorCount = init;
-        el.textContent = init.toLocaleString();
-        function tick() {
-          var inc = Math.floor(Math.random() * 5) + 1;
-          if (self._visitorCount < 10000) inc += Math.floor(Math.random() * 50) + 10;
-          self._visitorCount += inc;
-          el.textContent = self._visitorCount.toLocaleString();
-          setTimeout(tick, Math.random() * 3000 + 2000);
-        }
-        tick();
-      }, 2000);
+      el.textContent = '34';
+      var self = this;
+      function tick() {
+        var inc = Math.floor(Math.random() * 5) + 1;
+        if (self._visitorCount < 10000) inc += Math.floor(Math.random() * 50) + 10;
+        self._visitorCount += inc;
+        el.textContent = self._visitorCount.toLocaleString();
+        setTimeout(tick, Math.random() * 3000 + 2000);
+      }
+      setTimeout(tick, 2000);
     }
 
     // 更新圆形进度
