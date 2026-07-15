@@ -33,6 +33,9 @@ const App = {
     // 预加载当前学段词库
     loadLevelData(this.state.level).catch(function () {});
 
+    // 访客数动态增长
+    this._startVisitorCount();
+
     // ===== 修改位置：检查音频解锁状态 =====
     var audioUnlocked = localStorage.getItem('vocab_audio_unlocked') === '1';
     if (!audioUnlocked) {
@@ -233,22 +236,6 @@ const App = {
     this.countUp('totalLearned', stats.totalLearned);
     this.countUp('wrongCount', Storage.getWrongWords().length);
     this.countUp('bookCount', Storage.getWordbook().length);
-
-    // 访客数动态增长（仅初始化一次）
-    if (!this._visitorStarted) {
-      this._visitorStarted = true;
-      this._visitorCount = 34;
-      var el = document.getElementById('visitorCount');
-      var self = this;
-      function tick() {
-        var inc = Math.floor(Math.random() * 5) + 1;
-        if (self._visitorCount < 10000) inc += Math.floor(Math.random() * 50) + 10;
-        self._visitorCount += inc;
-        el.textContent = self._visitorCount.toLocaleString();
-        setTimeout(tick, Math.random() * 3000 + 2000);
-      }
-      setTimeout(tick, 2000);
-    }
 
     // 更新圆形进度
     const circle = document.getElementById('progressCircle');
@@ -1204,6 +1191,23 @@ const App = {
       }
       self.renderChallengeMap();
     };
+  },
+
+  // 访客数动态增长
+  _startVisitorCount: function () {
+    this._visitorCount = 34;
+    var self = this;
+    var el = document.getElementById('visitorCount');
+    if (!el) return;
+    el.textContent = '34';
+    function tick() {
+      var inc = Math.floor(Math.random() * 5) + 1;
+      if (self._visitorCount < 10000) inc += Math.floor(Math.random() * 50) + 10;
+      self._visitorCount += inc;
+      el.textContent = self._visitorCount.toLocaleString();
+      setTimeout(tick, Math.random() * 3000 + 2000);
+    }
+    setTimeout(tick, 2000);
   }
 };
 
